@@ -13,8 +13,11 @@ import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import Inventory from "./pages/Inventory";
 import Statistics from "./pages/Statistics";
+import Profile from "./pages/Profile";
 import { AuthProvider, useAuth } from "./hooks/useSupabaseAuth";
 import { LanguageProvider } from "./hooks/useLanguage";
+import { SidebarProvider, SidebarInset } from "./components/ui/sidebar";
+import { AppSidebar } from "./components/app-sidebar";
 
 const queryClient = new QueryClient();
 
@@ -31,22 +34,30 @@ const ProtectedRoute = ({ element }: { element: React.ReactNode }) => {
 
 // Router con AuthProvider
 const AppRouter = () => {
+  const { user } = useAuth();
+
   return (
-    <AuthProvider>
-      <LanguageProvider>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
-          <Route path="/emissions" element={<ProtectedRoute element={<Emissions />} />} />
-          <Route path="/calculator" element={<ProtectedRoute element={<Calculator />} />} />
-          <Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />
-          <Route path="/statistics" element={<ProtectedRoute element={<Statistics />} />} />
-          <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </LanguageProvider>
-    </AuthProvider>
+    <LanguageProvider>
+      <SidebarProvider>
+        <div className="flex min-h-screen w-full">
+          {user && <AppSidebar />}
+          <SidebarInset>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
+              <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+              <Route path="/emissions" element={<ProtectedRoute element={<Emissions />} />} />
+              <Route path="/calculator" element={<ProtectedRoute element={<Calculator />} />} />
+              <Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />
+              <Route path="/statistics" element={<ProtectedRoute element={<Statistics />} />} />
+              <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </SidebarInset>
+        </div>
+      </SidebarProvider>
+    </LanguageProvider>
   );
 };
 
@@ -56,7 +67,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AppRouter />
+        <AuthProvider>
+          <AppRouter />
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
