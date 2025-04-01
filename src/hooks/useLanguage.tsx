@@ -150,7 +150,6 @@ const translations: Translations = {
     allCategories: 'All categories',
     fuels: 'Fuels',
     travel: 'Travel',
-    waste: 'Waste',
     search: 'Search',
     showing: 'Showing',
     of: 'of',
