@@ -3,15 +3,45 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Emissions from "./pages/Emissions";
 import Calculator from "./pages/Calculator";
 import Users from "./pages/Users";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import { AuthProvider, useAuth } from "./hooks/useSupabaseAuth";
 
 const queryClient = new QueryClient();
+
+// Componente protegido que redirige a la autenticación si no hay sesión
+const ProtectedRoute = ({ element }: { element: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div className="flex h-screen items-center justify-center">Cargando...</div>;
+  }
+
+  return user ? <>{element}</> : <Navigate to="/auth" />;
+};
+
+// Router con AuthProvider
+const AppRouter = () => {
+  return (
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+        <Route path="/emissions" element={<ProtectedRoute element={<Emissions />} />} />
+        <Route path="/calculator" element={<ProtectedRoute element={<Calculator />} />} />
+        <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AuthProvider>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -19,15 +49,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/emissions" element={<Emissions />} />
-          <Route path="/calculator" element={<Calculator />} />
-          <Route path="/users" element={<Users />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AppRouter />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
