@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, ChevronDown, Leaf, Globe, User, BarChart3, Calculator } from 'lucide-react';
+import { Menu, X, LogOut, ChevronDown, Leaf, Globe, User, BarChart3, Calculator, Package, BarChart2, Languages } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
@@ -15,10 +15,12 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useSupabaseAuth';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, loading, signOut } = useAuth();
+  const { language, setLanguage, t } = useLanguage();
   const navigate = useNavigate();
   
   // Get user initials for avatar
@@ -33,10 +35,12 @@ export function Navbar() {
   };
 
   const navItems = [
-    { name: 'Dashboard', path: '/dashboard', icon: <BarChart3 className="h-4 w-4 mr-2" /> },
-    { name: 'Emisiones', path: '/emissions', icon: <Globe className="h-4 w-4 mr-2" /> },
-    { name: 'Calculadora', path: '/calculator', icon: <Calculator className="h-4 w-4 mr-2" /> },
-    { name: 'Usuarios', path: '/users', icon: <User className="h-4 w-4 mr-2" /> },
+    { name: t('dashboard'), path: '/dashboard', icon: <BarChart3 className="h-4 w-4 mr-2" /> },
+    { name: t('emissions'), path: '/emissions', icon: <Globe className="h-4 w-4 mr-2" /> },
+    { name: t('calculator'), path: '/calculator', icon: <Calculator className="h-4 w-4 mr-2" /> },
+    { name: t('inventory'), path: '/inventory', icon: <Package className="h-4 w-4 mr-2" /> },
+    { name: t('statistics'), path: '/statistics', icon: <BarChart2 className="h-4 w-4 mr-2" /> },
+    { name: t('users'), path: '/users', icon: <User className="h-4 w-4 mr-2" /> },
   ];
 
   const handleLogout = async () => {
@@ -45,6 +49,10 @@ export function Navbar() {
 
   const handleLogin = () => {
     navigate('/auth');
+  };
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'es' ? 'en' : 'es');
   };
 
   return (
@@ -71,6 +79,17 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleLanguage} 
+            className="mr-2"
+            title={language === 'es' ? 'Change to English' : 'Cambiar a Español'}
+          >
+            <Languages className="h-5 w-5" />
+            <span className="sr-only">{language === 'es' ? 'English' : 'Español'}</span>
+          </Button>
+
           {loading ? (
             <div className="flex items-center gap-2">
               <Skeleton className="h-8 w-8 rounded-full" />
@@ -86,31 +105,31 @@ export function Navbar() {
                     </AvatarFallback>
                   </Avatar>
                   <span className="hidden md:inline-block">
-                    {user.user_metadata.name || 'Usuario'}
+                    {user.user_metadata.name || t('user')}
                   </span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
+                <DropdownMenuLabel>{t('profile')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate('/users')}>
                   <User className="mr-2 h-4 w-4" />
-                  <span>Perfil</span>
+                  <span>{t('profile')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/dashboard')}>
                   <BarChart3 className="mr-2 h-4 w-4" />
-                  <span>Dashboard</span>
+                  <span>{t('dashboard')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="text-red-600">
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Cerrar sesión</span>
+                  <span>{t('signOut')}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <Button onClick={handleLogin} variant="default" size="sm" className="bg-green-600 hover:bg-green-700">
-              Iniciar sesión
+              {t('signIn')}
             </Button>
           )}
           
@@ -156,7 +175,7 @@ export function Navbar() {
                 }}
               >
                 <LogOut className="h-4 w-4" />
-                <span>Cerrar sesión</span>
+                <span>{t('signOut')}</span>
               </Button>
             ) : (
               <Button 
@@ -169,7 +188,7 @@ export function Navbar() {
                 }}
               >
                 <User className="h-4 w-4" />
-                <span>Iniciar sesión</span>
+                <span>{t('signIn')}</span>
               </Button>
             )}
           </nav>

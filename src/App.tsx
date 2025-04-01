@@ -11,7 +11,10 @@ import Calculator from "./pages/Calculator";
 import Users from "./pages/Users";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import Inventory from "./pages/Inventory";
+import Statistics from "./pages/Statistics";
 import { AuthProvider, useAuth } from "./hooks/useSupabaseAuth";
+import { LanguageProvider } from "./hooks/useLanguage";
 
 const queryClient = new QueryClient();
 
@@ -30,15 +33,19 @@ const ProtectedRoute = ({ element }: { element: React.ReactNode }) => {
 const AppRouter = () => {
   return (
     <AuthProvider>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
-        <Route path="/emissions" element={<ProtectedRoute element={<Emissions />} />} />
-        <Route path="/calculator" element={<ProtectedRoute element={<Calculator />} />} />
-        <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <LanguageProvider>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+          <Route path="/emissions" element={<ProtectedRoute element={<Emissions />} />} />
+          <Route path="/calculator" element={<ProtectedRoute element={<Calculator />} />} />
+          <Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />
+          <Route path="/statistics" element={<ProtectedRoute element={<Statistics />} />} />
+          <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </LanguageProvider>
     </AuthProvider>
   );
 };
