@@ -32,23 +32,38 @@ export function ScopeBreakdown() {
   const chartConfig = {
     transport: { 
       label: t('transport'),
-      theme: { light: '#10B981' }
+      theme: { 
+        light: '#10B981',
+        dark: '#10B981'
+      }
     },
     electricity: { 
       label: t('electricity'),
-      theme: { light: '#3B82F6' }
+      theme: { 
+        light: '#3B82F6',
+        dark: '#3B82F6'
+      }
     },
     diet: { 
       label: t('diet'),
-      theme: { light: '#6366F1' }
+      theme: { 
+        light: '#6366F1',
+        dark: '#6366F1'
+      }
     },
     waste: { 
       label: t('waste'),
-      theme: { light: '#F59E0B' }
+      theme: { 
+        light: '#F59E0B',
+        dark: '#F59E0B'
+      }
     },
     others: { 
       label: t('others'),
-      theme: { light: '#8B5CF6' }
+      theme: { 
+        light: '#8B5CF6',
+        dark: '#8B5CF6'
+      }
     }
   };
 

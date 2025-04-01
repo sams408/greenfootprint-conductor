@@ -32,15 +32,24 @@ export function EmissionsSummary() {
   const chartConfig = {
     scope1: {
       label: t('scope1'),
-      theme: { light: 'hsl(var(--primary))' }
+      theme: { 
+        light: 'hsl(var(--primary))',
+        dark: 'hsl(var(--primary))'
+      }
     },
     scope2: {
       label: t('scope2'),
-      theme: { light: 'hsl(var(--secondary))' }
+      theme: { 
+        light: 'hsl(var(--secondary))',
+        dark: 'hsl(var(--secondary))'
+      }
     },
     scope3: {
       label: t('scope3'),
-      theme: { light: 'hsl(var(--accent))' }
+      theme: { 
+        light: 'hsl(var(--accent))',
+        dark: 'hsl(var(--accent))'
+      }
     }
   };
 
