@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, ChevronDown, Leaf, Globe, User, BarChart3, Calculator, Package, BarChart2, Languages } from 'lucide-react';
+import { Menu, X, LogOut, Leaf, User, Languages } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
@@ -34,15 +34,6 @@ export function Navbar() {
       .substring(0, 2);
   };
 
-  const navItems = [
-    { name: t('dashboard'), path: '/dashboard', icon: <BarChart3 className="h-4 w-4 mr-2" /> },
-    { name: t('emissions'), path: '/emissions', icon: <Globe className="h-4 w-4 mr-2" /> },
-    { name: t('calculator'), path: '/calculator', icon: <Calculator className="h-4 w-4 mr-2" /> },
-    { name: t('inventory'), path: '/inventory', icon: <Package className="h-4 w-4 mr-2" /> },
-    { name: t('statistics'), path: '/statistics', icon: <BarChart2 className="h-4 w-4 mr-2" /> },
-    { name: t('users'), path: '/users', icon: <User className="h-4 w-4 mr-2" /> },
-  ];
-
   const handleLogout = async () => {
     await signOut();
   };
@@ -61,18 +52,7 @@ export function Navbar() {
           </Link>
         </div>
         
-        <nav className="hidden md:flex items-center gap-6">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className="flex items-center text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {item.icon}
-              {item.name}
-            </Link>
-          ))}
-        </nav>
+        {/* Removed the navigation menu */}
 
         <div className="flex items-center gap-2">
           <DropdownMenu>
@@ -132,10 +112,6 @@ export function Navbar() {
                   <User className="mr-2 h-4 w-4" />
                   <span>{t('profile')}</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/dashboard')}>
-                  <BarChart3 className="mr-2 h-4 w-4" />
-                  <span>{t('dashboard')}</span>
-                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="text-red-600">
                   <LogOut className="mr-2 h-4 w-4" />
@@ -160,7 +136,7 @@ export function Navbar() {
         </div>
       </div>
       
-      {/* Mobile menu */}
+      {/* Mobile menu - simplified with no navigation items */}
       <div
         className={cn(
           "fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto bg-background p-6 pb-32 shadow-md animate-in md:hidden",
@@ -169,17 +145,6 @@ export function Navbar() {
       >
         <div className="grid gap-4">
           <nav className="grid grid-flow-row auto-rows-max text-lg">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className="flex items-center py-2 text-muted-foreground hover:text-foreground transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                {item.icon}
-                {item.name}
-              </Link>
-            ))}
             {user ? (
               <Button 
                 variant="outline" 
