@@ -6,21 +6,24 @@ import { RecommendationsCard } from "@/components/dashboard/recommendations-card
 import { EmissionForm } from "@/components/dashboard/emission-form";
 import { Separator } from "@/components/ui/separator";
 import { Navbar } from "@/components/navbar";
+import { useLanguage } from "@/hooks/useLanguage";
 
 const Dashboard = () => {
+  const { t } = useLanguage();
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="container py-6 flex-1">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+            <h1 className="text-3xl font-bold tracking-tight">{t('dashboard')}</h1>
             <p className="text-muted-foreground">
-              Gestión y análisis de tu huella de carbono
+              {t('carbonFootprintManagement')}
             </p>
           </div>
           <div className="text-sm text-muted-foreground mt-2 md:mt-0">
-            Última actualización: {new Date().toLocaleDateString()}
+            {new Date().toLocaleDateString()}
           </div>
         </div>
         <Separator className="mb-6" />

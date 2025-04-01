@@ -1,42 +1,45 @@
 
 import { Car, Factory, Lightbulb, Sprout, TrendingDown } from 'lucide-react';
-
-const stats = [
-  {
-    title: "Emisiones Totales",
-    value: "324.6",
-    unit: "Ton CO2eq",
-    change: "-5.2%",
-    icon: Sprout,
-    positive: true,
-  },
-  {
-    title: "Alcance 1",
-    value: "87.3",
-    unit: "Ton CO2eq",
-    change: "-2.8%",
-    icon: Factory,
-    positive: true,
-  },
-  {
-    title: "Alcance 2",
-    value: "115.9",
-    unit: "Ton CO2eq",
-    change: "-7.4%",
-    icon: Lightbulb,
-    positive: true,
-  },
-  {
-    title: "Alcance 3",
-    value: "121.4",
-    unit: "Ton CO2eq",
-    change: "+1.2%",
-    icon: Car,
-    positive: false,
-  },
-];
+import { useLanguage } from "@/hooks/useLanguage";
 
 export function StatsCards() {
+  const { language, t } = useLanguage();
+  
+  const stats = [
+    {
+      title: language === 'en' ? "Total Emissions" : "Emisiones Totales",
+      value: "324.6",
+      unit: "Ton CO2eq",
+      change: "-5.2%",
+      icon: Sprout,
+      positive: true,
+    },
+    {
+      title: language === 'en' ? "Scope 1" : "Alcance 1",
+      value: "87.3",
+      unit: "Ton CO2eq",
+      change: "-2.8%",
+      icon: Factory,
+      positive: true,
+    },
+    {
+      title: language === 'en' ? "Scope 2" : "Alcance 2",
+      value: "115.9",
+      unit: "Ton CO2eq",
+      change: "-7.4%",
+      icon: Lightbulb,
+      positive: true,
+    },
+    {
+      title: language === 'en' ? "Scope 3" : "Alcance 3",
+      value: "121.4",
+      unit: "Ton CO2eq",
+      change: "+1.2%",
+      icon: Car,
+      positive: false,
+    },
+  ];
+
   return (
     <>
       {stats.map((stat) => (
