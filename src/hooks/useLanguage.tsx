@@ -1,5 +1,5 @@
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Language = 'es' | 'en';
 
@@ -9,7 +9,7 @@ type Translations = {
   };
 };
 
-// Diccionario con las traducciones
+// Dictionary with translations
 const translations: Translations = {
   es: {
     dashboard: 'Panel',
@@ -86,6 +86,7 @@ const translations: Translations = {
     confirmDelete: 'Confirmar eliminación',
     deleteConfirmation: '¿Estás seguro de que quieres eliminar este elemento?',
     cancel: 'Cancelar',
+    user: 'Usuario',
   },
   en: {
     dashboard: 'Dashboard',
@@ -173,8 +174,33 @@ type LanguageContextType = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+// Get stored language or use browser language as fallback
+const getInitialLanguage = (): Language => {
+  const storedLanguage = localStorage.getItem('language');
+  
+  if (storedLanguage === 'en' || storedLanguage === 'es') {
+    return storedLanguage;
+  }
+  
+  // Use browser language as fallback
+  const browserLanguage = navigator.language.split('-')[0];
+  return browserLanguage === 'en' ? 'en' : 'es';
+};
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<Language>('es');
+  const [language, setLanguageState] = useState<Language>(getInitialLanguage);
+
+  // Function to update language and save to localStorage
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('language', lang);
+    document.documentElement.lang = lang;
+  };
+
+  // Effect to set initial document language
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, []);
 
   const t = (key: string) => {
     return translations[language][key] || key;

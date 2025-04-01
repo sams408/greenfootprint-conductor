@@ -2,8 +2,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useEffect, useState } from "react";
 
-// Data para el gráfico
+// Data for the chart
 const getData = (language: string) => {
   const labels = language === 'es' 
     ? ['Transporte', 'Electricidad', 'Dieta', 'Residuos', 'Otros'] 
@@ -18,7 +19,7 @@ const getData = (language: string) => {
   ];
 };
 
-// Renderizado personalizado para las etiquetas
+// Custom label rendering
 const renderCustomizedLabel = (props: any) => {
   const { cx, cy, midAngle, innerRadius, outerRadius, percent, name } = props;
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -39,7 +40,7 @@ const renderCustomizedLabel = (props: any) => {
   ) : null;
 };
 
-// Componente personalizado para el tooltip
+// Custom tooltip component
 const CustomTooltip = ({ active, payload, language }: any) => {
   if (active && payload && payload.length) {
     return (
@@ -52,7 +53,7 @@ const CustomTooltip = ({ active, payload, language }: any) => {
   return null;
 };
 
-// Componente personalizado para la leyenda
+// Custom legend component
 const CustomLegend = ({ payload }: any) => {
   return (
     <ul className="flex flex-wrap justify-center gap-4 mt-4">
@@ -71,7 +72,12 @@ const CustomLegend = ({ payload }: any) => {
 
 export function ScopeBreakdown() {
   const { language, t } = useLanguage();
-  const data = getData(language);
+  const [chartData, setChartData] = useState(getData(language));
+  
+  // Update chart data when language changes
+  useEffect(() => {
+    setChartData(getData(language));
+  }, [language]);
 
   return (
     <Card className="col-span-1 hover:shadow-lg transition-shadow duration-300">
@@ -86,7 +92,7 @@ export function ScopeBreakdown() {
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={data}
+                data={chartData}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
@@ -98,7 +104,7 @@ export function ScopeBreakdown() {
                 animationDuration={1000}
                 animationBegin={0}
               >
-                {data.map((entry, index) => (
+                {chartData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
                 ))}
               </Pie>
