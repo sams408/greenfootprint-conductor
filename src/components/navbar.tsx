@@ -51,10 +51,6 @@ export function Navbar() {
     navigate('/auth');
   };
 
-  const toggleLanguage = () => {
-    setLanguage(language === 'es' ? 'en' : 'es');
-  };
-
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
@@ -79,16 +75,36 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={toggleLanguage} 
-            className="mr-2"
-            title={language === 'es' ? 'Change to English' : 'Cambiar a Español'}
-          >
-            <Languages className="h-5 w-5" />
-            <span className="sr-only">{language === 'es' ? 'English' : 'Español'}</span>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="mr-2"
+              >
+                <Languages className="h-5 w-5" />
+                <span className="sr-only">{t('chooseLanguage')}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>{t('chooseLanguage')}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className={language === 'es' ? 'bg-accent' : ''}
+                onClick={() => setLanguage('es')}
+              >
+                <span className="mr-2">🇪🇸</span>
+                {t('spanish')}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className={language === 'en' ? 'bg-accent' : ''}
+                onClick={() => setLanguage('en')}
+              >
+                <span className="mr-2">🇬🇧</span>
+                {t('english')}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {loading ? (
             <div className="flex items-center gap-2">

@@ -14,9 +14,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useLanguage } from "@/hooks/useLanguage";
 
 // Datos de ejemplo para emisiones
-const emissionsData = [
+const initialEmissionsData = [
   {
     id: 1,
     date: "2023-06-15",
@@ -71,10 +72,121 @@ const emissionsData = [
     value: 19.5,
     unit: "Ton CO2eq",
   },
+  {
+    id: 7,
+    date: "2023-05-10",
+    scope: "1",
+    category: "Combustible Edificios",
+    description: "Gas Propano Cafetería",
+    value: 5.2,
+    unit: "Ton CO2eq",
+  },
+  {
+    id: 8,
+    date: "2023-05-05",
+    scope: "3",
+    category: "Transporte de Empleados",
+    description: "Desplazamiento al Trabajo",
+    value: 42.7,
+    unit: "Ton CO2eq",
+  },
+  {
+    id: 9,
+    date: "2023-04-28",
+    scope: "2",
+    category: "Consumo Eléctrico",
+    description: "Electricidad Almacén",
+    value: 16.9,
+    unit: "Ton CO2eq",
+  },
+  {
+    id: 10,
+    date: "2023-04-20",
+    scope: "1",
+    category: "Flota Empresarial",
+    description: "Gasolina Vehículos Comerciales",
+    value: 22.3,
+    unit: "Ton CO2eq",
+  },
+  {
+    id: 11,
+    date: "2023-04-15",
+    scope: "3",
+    category: "Servicios Subcontratados",
+    description: "Tratamiento de Aguas Residuales",
+    value: 7.4,
+    unit: "Ton CO2eq",
+  },
+  {
+    id: 12,
+    date: "2023-04-10",
+    scope: "2",
+    category: "Consumo Eléctrico",
+    description: "Electricidad Servidores",
+    value: 31.6,
+    unit: "Ton CO2eq",
+  },
+  {
+    id: 13,
+    date: "2023-04-05",
+    scope: "1",
+    category: "Combustible Edificios",
+    description: "Gas Natural Calefacción",
+    value: 18.2,
+    unit: "Ton CO2eq",
+  },
+  {
+    id: 14,
+    date: "2023-03-28",
+    scope: "3",
+    category: "Viajes de Trabajo",
+    description: "Viajes en Tren",
+    value: 5.8,
+    unit: "Ton CO2eq",
+  },
+  {
+    id: 15,
+    date: "2023-03-20",
+    scope: "2",
+    category: "Consumo Eléctrico",
+    description: "Electricidad Aire Acondicionado",
+    value: 24.1,
+    unit: "Ton CO2eq",
+  }
 ];
 
 const Emissions = () => {
+  const { t } = useLanguage();
   const [showForm, setShowForm] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [scopeFilter, setScopeFilter] = useState("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+  
+  // Filter and paginate emissions data
+  const filteredEmissions = initialEmissionsData.filter(emission => {
+    const matchesSearch = 
+      emission.category.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      emission.description.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesScope = scopeFilter === "all" || emission.scope === scopeFilter;
+    
+    const matchesCategory = 
+      categoryFilter === "all" || 
+      (categoryFilter === "fuel" && (emission.category.includes("Combustible") || emission.category.includes("Flota"))) ||
+      (categoryFilter === "electricity" && emission.category.includes("Eléctrico")) ||
+      (categoryFilter === "travel" && emission.category.includes("Viajes")) ||
+      (categoryFilter === "waste" && (emission.category.includes("Residuos") || emission.category.includes("Subcontratados")));
+    
+    return matchesSearch && matchesScope && matchesCategory;
+  });
+  
+  const totalPages = Math.ceil(filteredEmissions.length / itemsPerPage);
+  const currentEmissions = filteredEmissions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -82,9 +194,9 @@ const Emissions = () => {
       <div className="container py-6 flex-1">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Emisiones</h1>
+            <h1 className="text-3xl font-bold tracking-tight">{t('emissions')}</h1>
             <p className="text-muted-foreground">
-              Registro y gestión de emisiones de gases de efecto invernadero
+              {t('distribution')}
             </p>
           </div>
           <div className="flex gap-2 mt-4 md:mt-0">
@@ -95,15 +207,15 @@ const Emissions = () => {
               onClick={() => setShowForm(!showForm)}
             >
               <Plus className="h-4 w-4" />
-              Nuevo Registro
+              {showForm ? t('cancel') : `${t('addItem')}`}
             </Button>
             <Button variant="outline" size="sm" className="flex items-center gap-1">
               <FileDown className="h-4 w-4" />
-              Exportar
+              {t('export')}
             </Button>
             <Button variant="outline" size="sm" className="flex items-center gap-1">
               <FileUp className="h-4 w-4" />
-              Importar
+              {t('import')}
             </Button>
           </div>
         </div>
@@ -120,38 +232,55 @@ const Emissions = () => {
             <div className="relative flex-1">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Buscar por categoría, descripción..."
+                placeholder={t('search')}
                 className="pl-8"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1); // Reset to first page on search
+                }}
               />
             </div>
             <div className="flex gap-2">
-              <Select>
+              <Select 
+                value={scopeFilter} 
+                onValueChange={(value) => {
+                  setScopeFilter(value);
+                  setCurrentPage(1); // Reset to first page on filter change
+                }}
+              >
                 <SelectTrigger className="w-[180px]">
                   <div className="flex items-center gap-1">
                     <Filter className="h-4 w-4" />
-                    <span>Alcance</span>
+                    <span>{t('scope')}</span>
                   </div>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Todos los alcances</SelectItem>
-                  <SelectItem value="1">Alcance 1</SelectItem>
-                  <SelectItem value="2">Alcance 2</SelectItem>
-                  <SelectItem value="3">Alcance 3</SelectItem>
+                  <SelectItem value="all">{t('allScopes')}</SelectItem>
+                  <SelectItem value="1">{t('scope1')}</SelectItem>
+                  <SelectItem value="2">{t('scope2')}</SelectItem>
+                  <SelectItem value="3">{t('scope3')}</SelectItem>
                 </SelectContent>
               </Select>
-              <Select>
+              <Select 
+                value={categoryFilter} 
+                onValueChange={(value) => {
+                  setCategoryFilter(value);
+                  setCurrentPage(1); // Reset to first page on filter change
+                }}
+              >
                 <SelectTrigger className="w-[180px]">
                   <div className="flex items-center gap-1">
                     <Filter className="h-4 w-4" />
-                    <span>Categoría</span>
+                    <span>{t('category')}</span>
                   </div>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Todas las categorías</SelectItem>
-                  <SelectItem value="fuel">Combustibles</SelectItem>
-                  <SelectItem value="electricity">Electricidad</SelectItem>
-                  <SelectItem value="travel">Viajes</SelectItem>
-                  <SelectItem value="waste">Residuos</SelectItem>
+                  <SelectItem value="all">{t('allCategories')}</SelectItem>
+                  <SelectItem value="fuel">{t('fuels')}</SelectItem>
+                  <SelectItem value="electricity">{t('electricity')}</SelectItem>
+                  <SelectItem value="travel">{t('travel')}</SelectItem>
+                  <SelectItem value="waste">{t('waste')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -161,15 +290,15 @@ const Emissions = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Fecha</TableHead>
-                  <TableHead>Alcance</TableHead>
-                  <TableHead>Categoría</TableHead>
-                  <TableHead>Descripción</TableHead>
-                  <TableHead className="text-right">Valor</TableHead>
+                  <TableHead>{t('date')}</TableHead>
+                  <TableHead>{t('scope')}</TableHead>
+                  <TableHead>{t('category')}</TableHead>
+                  <TableHead>{t('description')}</TableHead>
+                  <TableHead className="text-right">{t('value')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {emissionsData.map((emission) => (
+                {currentEmissions.map((emission) => (
                   <TableRow key={emission.id}>
                     <TableCell>{new Date(emission.date).toLocaleDateString()}</TableCell>
                     <TableCell>{emission.scope}</TableCell>
@@ -180,29 +309,59 @@ const Emissions = () => {
                     </TableCell>
                   </TableRow>
                 ))}
+                {currentEmissions.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={5} className="h-24 text-center">
+                      {t('noResults')}
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </div>
           
           <div className="flex items-center justify-between py-4">
             <p className="text-sm text-muted-foreground">
-              Mostrando 6 de 124 registros
+              {t('showing')} {Math.min((currentPage - 1) * itemsPerPage + 1, filteredEmissions.length)} - {Math.min(currentPage * itemsPerPage, filteredEmissions.length)} {t('of')} {filteredEmissions.length} {t('records')}
             </p>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" disabled>
-                Anterior
+              <Button 
+                variant="outline" 
+                size="sm" 
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              >
+                {t('previous')}
               </Button>
-              <Button variant="outline" size="sm">
-                1
-              </Button>
-              <Button variant="outline" size="sm">
-                2
-              </Button>
-              <Button variant="outline" size="sm">
-                3
-              </Button>
-              <Button variant="outline" size="sm">
-                Siguiente
+              {[...Array(Math.min(3, totalPages))].map((_, i) => {
+                // Logic to show correct page numbers when total pages > 3
+                let pageNumber = i + 1;
+                if (totalPages > 3) {
+                  if (currentPage > totalPages - 2) {
+                    pageNumber = totalPages - 2 + i;
+                  } else if (currentPage > 2) {
+                    pageNumber = currentPage - 1 + i;
+                  }
+                }
+                
+                return (
+                  <Button 
+                    key={pageNumber}
+                    variant={currentPage === pageNumber ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => setCurrentPage(pageNumber)}
+                  >
+                    {pageNumber}
+                  </Button>
+                );
+              })}
+              <Button 
+                variant="outline" 
+                size="sm" 
+                disabled={currentPage >= totalPages}
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              >
+                {t('next')}
               </Button>
             </div>
           </div>

@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useSupabaseAuth";
 import { Navigate } from "react-router-dom";
+import { useLanguage } from "@/hooks/useLanguage";
 
 const Auth = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ const Auth = () => {
   });
 
   const { user, signIn, signUp } = useAuth();
+  const { t } = useLanguage();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,44 +48,39 @@ const Auth = () => {
             <h1 className="text-2xl font-bold text-green-800">GreenFlow</h1>
           </div>
           <p className="text-muted-foreground">
-            Plataforma de gestión de huella de carbono
+            {t('carbonFootprintManagement')}
           </p>
         </div>
 
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="login">Iniciar sesión</TabsTrigger>
-            <TabsTrigger value="register">Registrarse</TabsTrigger>
+            <TabsTrigger value="login">{t('signIn')}</TabsTrigger>
+            <TabsTrigger value="register">{t('register')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="login">
             <Card>
               <CardHeader>
-                <CardTitle>Iniciar sesión</CardTitle>
+                <CardTitle>{t('signIn')}</CardTitle>
                 <CardDescription>
-                  Ingresa tus credenciales para acceder a tu cuenta
+                  {t('enterCredentials')}
                 </CardDescription>
               </CardHeader>
               <form onSubmit={handleSignIn}>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Correo electrónico</Label>
+                    <Label htmlFor="email">{t('email')}</Label>
                     <Input
                       id="email"
                       name="email"
                       type="email"
-                      placeholder="tu@correo.com"
+                      placeholder={t('emailPlaceholder')}
                       required
                       onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="password">Contraseña</Label>
-                      <Button variant="link" className="h-auto p-0" type="button">
-                        ¿Olvidaste tu contraseña?
-                      </Button>
-                    </div>
+                    <Label htmlFor="password">{t('password')}</Label>
                     <Input
                       id="password"
                       name="password"
@@ -95,7 +92,7 @@ const Auth = () => {
                 </CardContent>
                 <CardFooter>
                   <Button type="submit" className="w-full bg-eco-primary hover:bg-eco-primary/90">
-                    Iniciar sesión
+                    {t('signIn')}
                   </Button>
                 </CardFooter>
               </form>
@@ -105,36 +102,36 @@ const Auth = () => {
           <TabsContent value="register">
             <Card>
               <CardHeader>
-                <CardTitle>Crear cuenta</CardTitle>
+                <CardTitle>{t('createAccount')}</CardTitle>
                 <CardDescription>
-                  Completa el formulario para registrarte en la plataforma
+                  {t('completeFormToRegister')}
                 </CardDescription>
               </CardHeader>
               <form onSubmit={handleSignUp}>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Nombre completo</Label>
+                    <Label htmlFor="name">{t('fullName')}</Label>
                     <Input
                       id="name"
                       name="name"
-                      placeholder="Tu nombre completo"
+                      placeholder={t('fullNamePlaceholder')}
                       required
                       onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email">Correo electrónico</Label>
+                    <Label htmlFor="signup-email">{t('email')}</Label>
                     <Input
                       id="signup-email"
                       name="email"
                       type="email"
-                      placeholder="tu@correo.com"
+                      placeholder={t('emailPlaceholder')}
                       required
                       onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password">Contraseña</Label>
+                    <Label htmlFor="signup-password">{t('password')}</Label>
                     <Input
                       id="signup-password"
                       name="password"
@@ -147,7 +144,7 @@ const Auth = () => {
                 </CardContent>
                 <CardFooter>
                   <Button type="submit" className="w-full bg-eco-primary hover:bg-eco-primary/90">
-                    Crear cuenta
+                    {t('createAccount')}
                   </Button>
                 </CardFooter>
               </form>
