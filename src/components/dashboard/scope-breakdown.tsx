@@ -1,86 +1,59 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useEffect, useState } from "react";
-
-// Data for the chart
-const getData = (language: string) => {
-  const labels = language === 'es' 
-    ? ['Transporte', 'Electricidad', 'Dieta', 'Residuos', 'Otros'] 
-    : ['Transport', 'Electricity', 'Diet', 'Waste', 'Others'];
-  
-  return [
-    { name: labels[0], value: 35, color: "#10B981" },
-    { name: labels[1], value: 25, color: "#3B82F6" },
-    { name: labels[2], value: 20, color: "#6366F1" },
-    { name: labels[3], value: 15, color: "#F59E0B" },
-    { name: labels[4], value: 5, color: "#8B5CF6" },
-  ];
-};
-
-// Custom label rendering
-const renderCustomizedLabel = (props: any) => {
-  const { cx, cy, midAngle, innerRadius, outerRadius, percent, name } = props;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * Math.PI / 180);
-  const y = cy + radius * Math.sin(-midAngle * Math.PI / 180);
-
-  return percent > 0.05 ? (
-    <text 
-      x={x} 
-      y={y} 
-      fill="white" 
-      textAnchor="middle" 
-      dominantBaseline="central"
-      className="text-xs font-medium"
-    >
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  ) : null;
-};
-
-// Custom tooltip component
-const CustomTooltip = ({ active, payload, language }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-white p-3 border rounded-md shadow-lg">
-        <p className="font-medium text-sm">{payload[0].name}</p>
-        <p className="text-xs text-gray-600">{`${payload[0].value}% ${language === 'es' ? 'del total' : 'of total'}`}</p>
-      </div>
-    );
-  }
-  return null;
-};
-
-// Custom legend component
-const CustomLegend = ({ payload }: any) => {
-  return (
-    <ul className="flex flex-wrap justify-center gap-4 mt-4">
-      {payload.map((entry: any, index: number) => (
-        <li key={`legend-${index}`} className="flex items-center gap-2">
-          <div 
-            style={{ backgroundColor: entry.color }}
-            className="w-3 h-3 rounded-full"
-          />
-          <span className="text-xs">{entry.value}</span>
-        </li>
-      ))}
-    </ul>
-  );
-};
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
 export function ScopeBreakdown() {
   const { language, t } = useLanguage();
-  const [chartData, setChartData] = useState(getData(language));
+  const [chartData, setChartData] = useState(() => getData(language));
   
   // Update chart data when language changes
   useEffect(() => {
     setChartData(getData(language));
   }, [language]);
 
+  // Data for the chart
+  function getData(lang: string) {
+    const labels = lang === 'es' 
+      ? ['Transporte', 'Electricidad', 'Dieta', 'Residuos', 'Otros'] 
+      : ['Transport', 'Electricity', 'Diet', 'Waste', 'Others'];
+    
+    return [
+      { name: labels[0], value: 35, color: "#10B981" },
+      { name: labels[1], value: 25, color: "#3B82F6" },
+      { name: labels[2], value: 20, color: "#6366F1" },
+      { name: labels[3], value: 15, color: "#F59E0B" },
+      { name: labels[4], value: 5, color: "#8B5CF6" },
+    ];
+  }
+
+  const chartConfig = {
+    transport: { 
+      label: t('transport'),
+      theme: { light: '#10B981' }
+    },
+    electricity: { 
+      label: t('electricity'),
+      theme: { light: '#3B82F6' }
+    },
+    diet: { 
+      label: t('diet'),
+      theme: { light: '#6366F1' }
+    },
+    waste: { 
+      label: t('waste'),
+      theme: { light: '#F59E0B' }
+    },
+    others: { 
+      label: t('others'),
+      theme: { light: '#8B5CF6' }
+    }
+  };
+
   return (
-    <Card className="col-span-1 hover:shadow-lg transition-shadow duration-300">
+    <Card>
       <CardHeader>
         <CardTitle>{t('emissionsByCategory')}</CardTitle>
         <CardDescription>
@@ -89,29 +62,39 @@ export function ScopeBreakdown() {
       </CardHeader>
       <CardContent>
         <div className="h-[300px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={chartData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={renderCustomizedLabel}
-                outerRadius={110}
-                innerRadius={50}
-                paddingAngle={2}
-                dataKey="value"
-                animationDuration={1000}
-                animationBegin={0}
-              >
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
-                ))}
-              </Pie>
-              <Tooltip content={<CustomTooltip language={language} />} />
-              <Legend content={<CustomLegend />} />
-            </PieChart>
-          </ResponsiveContainer>
+          <ChartContainer config={chartConfig}>
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  outerRadius={110}
+                  innerRadius={50}
+                  paddingAngle={2}
+                  dataKey="value"
+                  animationDuration={1000}
+                  animationBegin={0}
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
+                  ))}
+                </Pie>
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        </div>
+        
+        <div className="mt-4 pt-4 border-t">
+          <h4 className="text-sm font-medium mb-2">{t('highlightedInsights')}</h4>
+          <ul className="text-sm text-muted-foreground space-y-1 list-disc pl-5">
+            <li>{t('transportHighestContributor')}</li>
+            <li>{t('electricityReduction')}</li>
+            <li>{t('wasteManagementImproving')}</li>
+          </ul>
         </div>
       </CardContent>
     </Card>

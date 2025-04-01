@@ -1,8 +1,9 @@
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useEffect, useState } from 'react';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend } from 'recharts';
 
 export function EmissionsSummary() {
   const { language, t } = useLanguage();
@@ -19,64 +20,62 @@ export function EmissionsSummary() {
       : ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
       
     return [
-      { name: monthNames[0], alcance1: 40, alcance2: 24, alcance3: 28 },
-      { name: monthNames[1], alcance1: 30, alcance2: 20, alcance3: 27 },
-      { name: monthNames[2], alcance1: 25, alcance2: 25, alcance3: 32 },
-      { name: monthNames[3], alcance1: 27, alcance2: 18, alcance3: 29 },
-      { name: monthNames[4], alcance1: 32, alcance2: 21, alcance3: 35 },
-      { name: monthNames[5], alcance1: 38, alcance2: 25, alcance3: 40 },
+      { name: monthNames[0], scope1: 40, scope2: 24, scope3: 28, total: 92 },
+      { name: monthNames[1], scope1: 30, scope2: 20, scope3: 27, total: 77 },
+      { name: monthNames[2], scope1: 25, scope2: 25, scope3: 32, total: 82 },
+      { name: monthNames[3], scope1: 27, scope2: 18, scope3: 29, total: 74 },
+      { name: monthNames[4], scope1: 32, scope2: 21, scope3: 35, total: 88 },
+      { name: monthNames[5], scope1: 38, scope2: 25, scope3: 40, total: 103 },
     ];
   }
   
-  const scopeLabels = {
-    alcance1: language === 'en' ? 'Scope 1' : 'Alcance 1',
-    alcance2: language === 'en' ? 'Scope 2' : 'Alcance 2',
-    alcance3: language === 'en' ? 'Scope 3' : 'Alcance 3',
+  const chartConfig = {
+    scope1: {
+      label: t('scope1'),
+      theme: { light: 'hsl(var(--primary))' }
+    },
+    scope2: {
+      label: t('scope2'),
+      theme: { light: 'hsl(var(--secondary))' }
+    },
+    scope3: {
+      label: t('scope3'),
+      theme: { light: 'hsl(var(--accent))' }
+    }
   };
 
   return (
-    <Card className="col-span-2 eco-card">
+    <Card className="col-span-2">
       <CardHeader>
-        <CardTitle>{language === 'en' ? 'Emissions by Scope' : 'Emisiones por Alcance'}</CardTitle>
+        <CardTitle>{t('emissionsByScope')}</CardTitle>
         <CardDescription>
-          {language === 'en' 
-            ? 'Monthly comparison of CO2eq emissions (tons)' 
-            : 'Comparativa mensual de emisiones de CO2eq (toneladas)'}
+          {t('monthlyComparisonOfEmissions')}
         </CardDescription>
       </CardHeader>
       <CardContent className="px-2">
         <div className="h-[300px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={chartData}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 0,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.1)" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip 
-                contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderRadius: '8px', border: '1px solid #eaeaea' }}
-                labelStyle={{ fontWeight: 'bold', marginBottom: '5px' }}
-                formatter={(value, name) => {
-                  const translatedName = scopeLabels[name as keyof typeof scopeLabels] || name;
-                  return [value, translatedName];
+          <ChartContainer config={chartConfig}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={chartData}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 0,
+                  bottom: 5,
                 }}
-              />
-              <Legend 
-                formatter={(value) => {
-                  return scopeLabels[value as keyof typeof scopeLabels] || value;
-                }}
-              />
-              <Bar dataKey="alcance1" name="alcance1" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="alcance2" name="alcance2" fill="hsl(var(--secondary))" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="alcance3" name="alcance3" fill="hsl(var(--accent))" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.1)" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Legend />
+                <Bar dataKey="scope1" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="scope2" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="scope3" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </ChartContainer>
         </div>
       </CardContent>
     </Card>

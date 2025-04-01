@@ -12,10 +12,12 @@ export type SidebarItem = {
   path: string;
   children?: SidebarSubItem[];
   expanded?: boolean;
+  badge?: string;
 };
 
 export type SidebarSubItem = {
   labelKey: string;
   path: string;
   icon?: ElementType;
+  badge?: string;
 };
