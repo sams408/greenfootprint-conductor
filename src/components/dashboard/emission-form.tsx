@@ -20,94 +20,96 @@ import {
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export function EmissionForm() {
   const { toast } = useToast();
   const [selectedScope, setSelectedScope] = useState("scope1");
+  const { t } = useLanguage();
   
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     toast({
-      title: "Datos guardados",
-      description: "Los datos de emisión han sido registrados correctamente.",
+      title: t('dataSubmitted'),
+      description: t('emissionDataRegistered'),
     });
   };
 
   return (
     <Card className="eco-card">
       <CardHeader>
-        <CardTitle>Registro de Emisiones</CardTitle>
+        <CardTitle>{t('emissionRegistration')}</CardTitle>
         <CardDescription>
-          Introduce los datos de consumo para calcular tu huella de carbono
+          {t('enterConsumptionData')}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="scope1" onValueChange={setSelectedScope}>
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="scope1">Alcance 1</TabsTrigger>
-            <TabsTrigger value="scope2">Alcance 2</TabsTrigger>
-            <TabsTrigger value="scope3">Alcance 3</TabsTrigger>
+            <TabsTrigger value="scope1">{t('scope1')}</TabsTrigger>
+            <TabsTrigger value="scope2">{t('scope2')}</TabsTrigger>
+            <TabsTrigger value="scope3">{t('scope3')}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="scope1">
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="fuelType">Tipo de Combustible</Label>
+                  <Label htmlFor="fuelType">{t('fuelType')}</Label>
                   <Select required>
                     <SelectTrigger id="fuelType">
-                      <SelectValue placeholder="Seleccionar combustible" />
+                      <SelectValue placeholder={t('selectFuel')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="diesel">Diésel</SelectItem>
-                      <SelectItem value="gasoline">Gasolina</SelectItem>
-                      <SelectItem value="natgas">Gas Natural</SelectItem>
-                      <SelectItem value="lpg">GLP (Gas Licuado)</SelectItem>
+                      <SelectItem value="diesel">{t('diesel')}</SelectItem>
+                      <SelectItem value="gasoline">{t('gasoline')}</SelectItem>
+                      <SelectItem value="natgas">{t('naturalGas')}</SelectItem>
+                      <SelectItem value="lpg">{t('lpg')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="consumption">Consumo</Label>
+                    <Label htmlFor="consumption">{t('consumption')}</Label>
                     <Input id="consumption" type="number" min="0" step="0.01" required />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="unit">Unidad</Label>
+                    <Label htmlFor="unit">{t('unit')}</Label>
                     <Select required>
                       <SelectTrigger id="unit">
-                        <SelectValue placeholder="Seleccionar unidad" />
+                        <SelectValue placeholder={t('selectUnit')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="liters">Litros</SelectItem>
-                        <SelectItem value="kg">Kilogramos</SelectItem>
-                        <SelectItem value="m3">Metros cúbicos</SelectItem>
+                        <SelectItem value="liters">{t('liters')}</SelectItem>
+                        <SelectItem value="kg">{t('kilograms')}</SelectItem>
+                        <SelectItem value="m3">{t('cubicMeters')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
                 
                 <div className="grid gap-2">
-                  <Label htmlFor="source">Fuente</Label>
+                  <Label htmlFor="source">{t('source')}</Label>
                   <Select required>
                     <SelectTrigger id="source">
-                      <SelectValue placeholder="Seleccionar fuente" />
+                      <SelectValue placeholder={t('selectSource')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="buildings">Edificios</SelectItem>
-                      <SelectItem value="vehicles">Flota Vehicular</SelectItem>
-                      <SelectItem value="machinery">Maquinaria</SelectItem>
+                      <SelectItem value="buildings">{t('buildings')}</SelectItem>
+                      <SelectItem value="vehicles">{t('vehicleFleet')}</SelectItem>
+                      <SelectItem value="machinery">{t('machinery')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 
                 <div className="grid gap-2">
-                  <Label htmlFor="period">Período</Label>
+                  <Label htmlFor="period">{t('period')}</Label>
                   <Input id="period" type="month" required />
                 </div>
               </div>
               
-              <Button type="submit" className="mt-4 w-full">Registrar Emisiones</Button>
+              <Button type="submit" className="mt-4 w-full">{t('registerEmissions')}</Button>
             </form>
           </TabsContent>
           
@@ -115,51 +117,51 @@ export function EmissionForm() {
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="energyType">Tipo de Energía</Label>
+                  <Label htmlFor="energyType">{t('energyType')}</Label>
                   <Select required>
                     <SelectTrigger id="energyType">
-                      <SelectValue placeholder="Seleccionar tipo de energía" />
+                      <SelectValue placeholder={t('selectEnergyType')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="electricity">Electricidad</SelectItem>
-                      <SelectItem value="heat">Calor/Frío</SelectItem>
-                      <SelectItem value="steam">Vapor</SelectItem>
+                      <SelectItem value="electricity">{t('electricity')}</SelectItem>
+                      <SelectItem value="heat">{t('heatCool')}</SelectItem>
+                      <SelectItem value="steam">{t('steam')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="consumption2">Consumo</Label>
+                    <Label htmlFor="consumption2">{t('consumption')}</Label>
                     <Input id="consumption2" type="number" min="0" step="0.01" required />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="unit2">Unidad</Label>
+                    <Label htmlFor="unit2">{t('unit')}</Label>
                     <Select required>
                       <SelectTrigger id="unit2">
-                        <SelectValue placeholder="Seleccionar unidad" />
+                        <SelectValue placeholder={t('selectUnit')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="kwh">kWh</SelectItem>
-                        <SelectItem value="mwh">MWh</SelectItem>
-                        <SelectItem value="gj">GJ</SelectItem>
+                        <SelectItem value="kwh">{t('kwh')}</SelectItem>
+                        <SelectItem value="mwh">{t('mwh')}</SelectItem>
+                        <SelectItem value="gj">{t('gj')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
                 
                 <div className="grid gap-2">
-                  <Label htmlFor="location">Ubicación</Label>
-                  <Input id="location" placeholder="Oficina central, planta, etc." required />
+                  <Label htmlFor="location">{t('location')}</Label>
+                  <Input id="location" placeholder={t('locationPlaceholder')} required />
                 </div>
                 
                 <div className="grid gap-2">
-                  <Label htmlFor="period2">Período</Label>
+                  <Label htmlFor="period2">{t('period')}</Label>
                   <Input id="period2" type="month" required />
                 </div>
               </div>
               
-              <Button type="submit" className="mt-4 w-full">Registrar Emisiones</Button>
+              <Button type="submit" className="mt-4 w-full">{t('registerEmissions')}</Button>
             </form>
           </TabsContent>
           
@@ -167,60 +169,60 @@ export function EmissionForm() {
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="category">Categoría</Label>
+                  <Label htmlFor="category">{t('category')}</Label>
                   <Select required>
                     <SelectTrigger id="category">
-                      <SelectValue placeholder="Seleccionar categoría" />
+                      <SelectValue placeholder={t('selectCategory')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="business-travel">Viajes de Negocio</SelectItem>
-                      <SelectItem value="employee-commuting">Desplazamiento Empleados</SelectItem>
-                      <SelectItem value="waste">Generación de Residuos</SelectItem>
-                      <SelectItem value="purchased-goods">Bienes y Servicios</SelectItem>
+                      <SelectItem value="business-travel">{t('businessTravel')}</SelectItem>
+                      <SelectItem value="employee-commuting">{t('employeeCommuting')}</SelectItem>
+                      <SelectItem value="waste">{t('waste')}</SelectItem>
+                      <SelectItem value="purchased-goods">{t('purchasedGoods')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 
                 <div className="grid gap-2">
-                  <Label htmlFor="description">Descripción</Label>
-                  <Input id="description" placeholder="Descripción breve" required />
+                  <Label htmlFor="description">{t('description')}</Label>
+                  <Input id="description" placeholder={t('descriptionPlaceholder')} required />
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="amount">Cantidad</Label>
+                    <Label htmlFor="amount">{t('amount')}</Label>
                     <Input id="amount" type="number" min="0" step="0.01" required />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="unit3">Unidad</Label>
+                    <Label htmlFor="unit3">{t('unit')}</Label>
                     <Select required>
                       <SelectTrigger id="unit3">
-                        <SelectValue placeholder="Seleccionar unidad" />
+                        <SelectValue placeholder={t('selectUnit')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="km">Kilómetros</SelectItem>
-                        <SelectItem value="kg">Kilogramos</SelectItem>
-                        <SelectItem value="units">Unidades</SelectItem>
-                        <SelectItem value="euros">Euros</SelectItem>
+                        <SelectItem value="km">{t('kilometers')}</SelectItem>
+                        <SelectItem value="kg">{t('kilograms')}</SelectItem>
+                        <SelectItem value="units">{t('units')}</SelectItem>
+                        <SelectItem value="euros">{t('euros')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
                 
                 <div className="grid gap-2">
-                  <Label htmlFor="period3">Período</Label>
+                  <Label htmlFor="period3">{t('period')}</Label>
                   <Input id="period3" type="month" required />
                 </div>
               </div>
               
-              <Button type="submit" className="mt-4 w-full">Registrar Emisiones</Button>
+              <Button type="submit" className="mt-4 w-full">{t('registerEmissions')}</Button>
             </form>
           </TabsContent>
         </Tabs>
       </CardContent>
       <CardFooter>
         <p className="text-xs text-muted-foreground">
-          Los factores de emisión se aplican según el Greenhouse Gas Protocol y la ISO 14064.
+          {t('emissionsFactorNote')}
         </p>
       </CardFooter>
     </Card>

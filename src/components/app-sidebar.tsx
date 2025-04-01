@@ -43,12 +43,12 @@ import {
 import { Input } from "@/components/ui/input";
 
 type SidebarCategory = {
-  label: string;
+  labelKey: string;
   items: SidebarItem[];
 };
 
 type SidebarItem = {
-  label: string;
+  labelKey: string;
   icon: React.ElementType;
   path: string;
   children?: SidebarSubItem[];
@@ -56,7 +56,7 @@ type SidebarItem = {
 };
 
 type SidebarSubItem = {
-  label: string;
+  labelKey: string;
   path: string;
   icon?: React.ElementType;
 };
@@ -68,44 +68,44 @@ export function AppSidebar() {
   
   const [categories, setCategories] = useState<SidebarCategory[]>([
     {
-      label: "MEDICIÓN",
+      labelKey: "measurementTitle",
       items: [
         {
-          label: "Inicio",
+          labelKey: "home",
           icon: Leaf,
           path: "/",
           expanded: false,
         },
         {
-          label: "Mis tareas",
+          labelKey: "tasks",
           icon: ClipboardList,
           path: "/tasks",
           expanded: false,
         },
         {
-          label: t('dashboard'),
+          labelKey: "dashboard",
           icon: BarChart3,
           path: "/dashboard",
           expanded: false,
         },
         {
-          label: "Recolección de datos",
+          labelKey: "dataCollection",
           icon: Database,
           path: "/data-collection",
           expanded: true,
           children: [
             {
-              label: t('emissions'),
+              labelKey: "emissions",
               path: "/emissions",
               icon: Globe,
             },
             {
-              label: t('calculator'),
+              labelKey: "calculator",
               path: "/calculator",
               icon: Calculator,
             },
             {
-              label: t('inventory'),
+              labelKey: "inventory",
               path: "/inventory",
               icon: Package,
             }
@@ -114,44 +114,44 @@ export function AppSidebar() {
       ]
     },
     {
-      label: "PLAN DE ACCIÓN",
+      labelKey: "actionPlanTitle",
       items: [
         {
-          label: "Reducción",
+          labelKey: "reduction",
           icon: Target,
           path: "/reduction",
           expanded: true,
           children: [
             {
-              label: "Escenarios",
+              labelKey: "scenarios",
               path: "/scenarios",
               icon: PieChart,
             },
             {
-              label: "Iniciativas",
+              labelKey: "initiatives",
               path: "/initiatives",
               icon: Lightbulb,
             },
             {
-              label: "Proyección",
+              labelKey: "projection",
               path: "/projection",
               icon: BarChart,
             },
             {
-              label: "Partners",
+              labelKey: "partners",
               path: "/partners",
               icon: Handshake,
             }
           ]
         },
         {
-          label: "Certificaciones",
+          labelKey: "certifications",
           icon: Award,
           path: "/certifications",
           expanded: false,
         },
         {
-          label: "Subvenciones",
+          labelKey: "subsidies",
           icon: FileCheck,
           path: "/subsidies",
           expanded: false,
@@ -159,22 +159,22 @@ export function AppSidebar() {
       ]
     },
     {
-      label: "COMUNICACIÓN",
+      labelKey: "communicationTitle",
       items: [
         {
-          label: "Informes",
+          labelKey: "reports",
           icon: FileText,
           path: "/reports",
           expanded: false,
         },
         {
-          label: "Perfil público",
+          labelKey: "publicProfile",
           icon: UserCircle,
           path: "/public-profile",
           expanded: false,
         },
         {
-          label: "Concientización",
+          labelKey: "awareness",
           icon: Globe,
           path: "/awareness",
           expanded: false,
@@ -182,22 +182,22 @@ export function AppSidebar() {
       ]
     },
     {
-      label: "CONFIGURACIÓN",
+      labelKey: "configurationTitle",
       items: [
         {
-          label: t('users'),
+          labelKey: "users",
           icon: Users,
           path: "/users",
           expanded: false,
         },
         {
-          label: t('statistics'),
+          labelKey: "statistics",
           icon: BarChart2,
           path: "/statistics",
           expanded: false,
         },
         {
-          label: "Ajustes",
+          labelKey: "settings",
           icon: Settings,
           path: "/settings",
           expanded: false,
@@ -235,19 +235,19 @@ export function AppSidebar() {
         </div>
         <div className="px-2 pb-4 relative">
           <Search className="h-4 w-4 absolute left-5 top-3 text-gray-400" />
-          <Input placeholder="Ir a..." className="pl-8 h-9 text-sm bg-gray-50 border-gray-200" />
+          <Input placeholder={t('goTo')} className="pl-8 h-9 text-sm bg-gray-50 border-gray-200" />
         </div>
       </SidebarHeader>
       <SidebarContent className="p-0">
         {categories.map((category, catIndex) => (
-          <SidebarGroup key={category.label} className="py-1">
+          <SidebarGroup key={category.labelKey} className="py-1">
             <SidebarGroupLabel className="px-4 py-1 text-xs font-semibold text-gray-500">
-              {category.label}
+              {t(category.labelKey)}
             </SidebarGroupLabel>
             <SidebarGroupContent className="space-y-1">
               <SidebarMenu>
                 {category.items.map((item, itemIndex) => (
-                  <div key={item.label}>
+                  <div key={item.labelKey}>
                     <SidebarMenuItem>
                       {item.children ? (
                         <div 
@@ -258,14 +258,14 @@ export function AppSidebar() {
                           onClick={() => toggleExpand(catIndex, itemIndex)}
                         >
                           <item.icon className="h-4 w-4 mr-2" />
-                          <span className="flex-grow">{item.label}</span>
+                          <span className="flex-grow">{t(item.labelKey)}</span>
                           {item.expanded ? 
                             <ChevronUp className="h-4 w-4 text-gray-400" /> : 
                             <ChevronDown className="h-4 w-4 text-gray-400" />
                           }
                         </div>
                       ) : (
-                        <SidebarMenuButton asChild tooltip={item.label}>
+                        <SidebarMenuButton asChild tooltip={t(item.labelKey)}>
                           <Link 
                             to={item.path}
                             className={cn(
@@ -274,7 +274,7 @@ export function AppSidebar() {
                             )}
                           >
                             <item.icon className="h-4 w-4 mr-2" />
-                            <span>{item.label}</span>
+                            <span>{t(item.labelKey)}</span>
                           </Link>
                         </SidebarMenuButton>
                       )}
@@ -283,8 +283,8 @@ export function AppSidebar() {
                     {item.children && item.expanded && (
                       <div className="ml-6 pl-2 border-l border-gray-200">
                         {item.children.map((subItem) => (
-                          <SidebarMenuItem key={subItem.label}>
-                            <SidebarMenuButton asChild tooltip={subItem.label}>
+                          <SidebarMenuItem key={subItem.labelKey}>
+                            <SidebarMenuButton asChild tooltip={t(subItem.labelKey)}>
                               <Link 
                                 to={subItem.path}
                                 className={cn(
@@ -293,7 +293,7 @@ export function AppSidebar() {
                                 )}
                               >
                                 {subItem.icon && <subItem.icon className="h-4 w-4 mr-2" />}
-                                <span>{subItem.label}</span>
+                                <span>{t(subItem.labelKey)}</span>
                               </Link>
                             </SidebarMenuButton>
                           </SidebarMenuItem>
@@ -315,7 +315,7 @@ export function AppSidebar() {
               <div className="flex flex-col">
                 <span className="font-medium text-gray-700">{user.user_metadata.name || user.email}</span>
                 <Link to="/profile" className="text-xs text-gray-500 hover:text-gray-800 hover:underline">
-                  Ver perfil
+                  {t('viewProfile')}
                 </Link>
               </div>
             </>
