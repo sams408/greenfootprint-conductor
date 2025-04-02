@@ -5,20 +5,14 @@ import {
   Calculator,
   Database,
   UserCircle,
-  FileText,
   Settings,
   Globe,
   Package,
   BarChart2,
-  ClipboardList,
   PieChart,
   Users,
-  Award,
-  Target,
   Lightbulb,
   BarChart,
-  Handshake,
-  FileCheck
 } from "lucide-react";
 import { SidebarCategory } from "./sidebar-types";
 
@@ -30,12 +24,6 @@ export const getDefaultCategories = (): SidebarCategory[] => [
         labelKey: "home",
         icon: Leaf,
         path: "/",
-        expanded: false,
-      },
-      {
-        labelKey: "tasks",
-        icon: ClipboardList,
-        path: "/tasks",
         expanded: false,
       },
       {
@@ -66,74 +54,6 @@ export const getDefaultCategories = (): SidebarCategory[] => [
             icon: Package,
           }
         ]
-      }
-    ]
-  },
-  {
-    labelKey: "actionPlanTitle",
-    items: [
-      {
-        labelKey: "reduction",
-        icon: Target,
-        path: "/reduction",
-        expanded: true,
-        children: [
-          {
-            labelKey: "scenarios",
-            path: "/scenarios",
-            icon: PieChart,
-          },
-          {
-            labelKey: "initiatives",
-            path: "/initiatives",
-            icon: Lightbulb,
-          },
-          {
-            labelKey: "projection",
-            path: "/projection",
-            icon: BarChart,
-          },
-          {
-            labelKey: "partners",
-            path: "/partners",
-            icon: Handshake,
-          }
-        ]
-      },
-      {
-        labelKey: "certifications",
-        icon: Award,
-        path: "/certifications",
-        expanded: false,
-      },
-      {
-        labelKey: "subsidies",
-        icon: FileCheck,
-        path: "/subsidies",
-        expanded: false,
-      }
-    ]
-  },
-  {
-    labelKey: "communicationTitle",
-    items: [
-      {
-        labelKey: "reports",
-        icon: FileText,
-        path: "/reports",
-        expanded: false,
-      },
-      {
-        labelKey: "publicProfile",
-        icon: UserCircle,
-        path: "/public-profile",
-        expanded: false,
-      },
-      {
-        labelKey: "awareness",
-        icon: Globe,
-        path: "/awareness",
-        expanded: false,
       }
     ]
   },
