@@ -1,3 +1,4 @@
+
 type Language = 'es' | 'en';
 
 export type Translations = {
@@ -184,7 +185,6 @@ export const translations: Translations = {
     longTermGoal: 'Meta a largo plazo',
     by: 'para',
     complete: 'completado',
-    emissions: 'Emisiones',
     reduction: 'Reducción',
     highlightedInsights: 'Hallazgos destacados',
     transportHighestContributor: 'El transporte es el mayor contribuyente',

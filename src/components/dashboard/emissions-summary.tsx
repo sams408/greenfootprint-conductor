@@ -78,7 +78,7 @@ export function EmissionsSummary() {
                 <XAxis dataKey="name" />
                 <YAxis />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Legend layout="horizontal" verticalAlign="bottom" wrapperStyle={{ paddingTop: '15px' }} />
+                <Legend layout="horizontal" verticalAlign="bottom" wrapperStyle={{ paddingTop: '15px', margin: '0 auto' }} />
                 <Bar dataKey="scope1" name={t('scope1')} fill="#3B82F6" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="scope2" name={t('scope2')} fill="#10B981" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="scope3" name={t('scope3')} fill="#8B5CF6" radius={[4, 4, 0, 0]} />
