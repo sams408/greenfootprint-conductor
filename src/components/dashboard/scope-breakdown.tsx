@@ -4,6 +4,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recha
 import { useLanguage } from "@/hooks/useLanguage";
 import { useEffect, useState } from "react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { PieChart as PieChartIcon } from "lucide-react";
 
 export function ScopeBreakdown() {
   const { language, t } = useLanguage();
@@ -70,7 +71,10 @@ export function ScopeBreakdown() {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle>{t('emissionsByCategory')}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <PieChartIcon className="h-5 w-5" />
+          {t('emissionsByCategory')}
+        </CardTitle>
         <CardDescription>
           {t('distribution')}
         </CardDescription>
@@ -85,8 +89,8 @@ export function ScopeBreakdown() {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  outerRadius={70}
-                  innerRadius={40}
+                  outerRadius={90}
+                  innerRadius={50}
                   paddingAngle={3}
                   dataKey="value"
                   animationDuration={1000}
@@ -99,30 +103,23 @@ export function ScopeBreakdown() {
                   ))}
                 </Pie>
                 <ChartTooltip content={<ChartTooltipContent nameKey="name" />} />
-                <Legend 
-                  layout="horizontal" 
-                  verticalAlign="bottom" 
-                  align="center"
-                  wrapperStyle={{ 
-                    paddingTop: "20px",
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "center",
-                    gap: "16px"
-                  }}
-                  formatter={(value, entry, index) => (
-                    <span className="text-sm font-medium flex items-center gap-2">
-                      <span className="inline-block w-3 h-3 rounded-sm" style={{ backgroundColor: chartData[index].color }}></span>
-                      {value} ({chartData[index].value}%)
-                    </span>
-                  )}
-                />
               </PieChart>
             </ResponsiveContainer>
           </ChartContainer>
         </div>
         
-        <div className="mt-8 pt-4 border-t">
+        <div className="mt-2">
+          <div className="flex flex-wrap justify-center gap-4 my-4">
+            {chartData.map((entry, index) => (
+              <div key={`legend-${index}`} className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: entry.color }}></div>
+                <span className="text-sm">{entry.name} ({entry.value}%)</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="mt-4 pt-4 border-t">
           <h4 className="text-sm font-medium mb-3">{t('highlightedInsights')}</h4>
           <ul className="text-sm text-muted-foreground space-y-2 list-disc pl-5">
             <li>{t('transportHighestContributor')}</li>
