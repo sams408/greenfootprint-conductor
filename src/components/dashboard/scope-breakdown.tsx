@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useEffect, useState } from "react";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
 
 export function ScopeBreakdown() {
   const { language, t } = useLanguage();
@@ -67,6 +67,37 @@ export function ScopeBreakdown() {
     }
   };
 
+  // Custom renderer for the pie chart labels
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+    name,
+  }: any) => {
+    const RADIAN = Math.PI / 180;
+    // Position the labels outside the pie chart
+    const radius = outerRadius + 30;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    
+    return percent > 0.05 ? (
+      <text
+        x={x}
+        y={y}
+        fill="#888888"
+        textAnchor={x > cx ? "start" : "end"}
+        dominantBaseline="central"
+        className="text-xs font-medium"
+      >
+        {`${name} (${(percent * 100).toFixed(0)}%)`}
+      </text>
+    ) : null;
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -76,7 +107,7 @@ export function ScopeBreakdown() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px] w-full">
+        <div className="h-[350px] w-full">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -86,15 +117,15 @@ export function ScopeBreakdown() {
                   cy="50%"
                   labelLine={false}
                   outerRadius={110}
-                  innerRadius={50}
-                  paddingAngle={2}
+                  innerRadius={60}
+                  paddingAngle={3}
                   dataKey="value"
                   animationDuration={1000}
                   animationBegin={0}
                   nameKey="name"
                 >
                   {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
+                    <Cell key={`cell-${index}`} fill={entry.color} stroke="white" strokeWidth={2} />
                   ))}
                 </Pie>
                 <ChartTooltip content={<ChartTooltipContent nameKey="name" />} />
@@ -102,16 +133,28 @@ export function ScopeBreakdown() {
                   layout="horizontal" 
                   verticalAlign="bottom" 
                   align="center"
-                  wrapperStyle={{ paddingTop: "20px" }}
+                  wrapperStyle={{ 
+                    paddingTop: "30px",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    gap: "16px"
+                  }}
+                  formatter={(value, entry, index) => (
+                    <span className="text-sm font-medium flex items-center gap-2">
+                      <span className="inline-block w-3 h-3 rounded-sm" style={{ backgroundColor: chartData[index].color }}></span>
+                      {value} ({chartData[index].value}%)
+                    </span>
+                  )}
                 />
               </PieChart>
             </ResponsiveContainer>
           </ChartContainer>
         </div>
         
-        <div className="mt-4 pt-4 border-t">
-          <h4 className="text-sm font-medium mb-2">{t('highlightedInsights')}</h4>
-          <ul className="text-sm text-muted-foreground space-y-1 list-disc pl-5">
+        <div className="mt-6 pt-4 border-t">
+          <h4 className="text-sm font-medium mb-3">{t('highlightedInsights')}</h4>
+          <ul className="text-sm text-muted-foreground space-y-2 list-disc pl-5">
             <li>{t('transportHighestContributor')}</li>
             <li>{t('electricityReduction')}</li>
             <li>{t('wasteManagementImproving')}</li>
