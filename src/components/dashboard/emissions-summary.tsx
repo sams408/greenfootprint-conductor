@@ -15,9 +15,9 @@ export function EmissionsSummary() {
   }, [language]);
   
   function getChartData(lang: string) {
-    const monthNames = lang === 'en' 
-      ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-      : ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
+    const monthNames = [
+      t('jan'), t('feb'), t('mar'), t('apr'), t('may'), t('jun')
+    ];
       
     return [
       { name: monthNames[0], scope1: 40, scope2: 24, scope3: 28, total: 92 },

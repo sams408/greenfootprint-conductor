@@ -1,5 +1,5 @@
 
-import { Translations } from './types';
+import { Translations, Language } from './types';
 import { commonTranslations } from './common';
 import { dashboardTranslations } from './dashboard';
 import { chartsTranslations } from './charts';
@@ -7,7 +7,7 @@ import { inventoryTranslations } from './inventory';
 import { formsTranslations } from './forms';
 import { navigationTranslations } from './navigation';
 
-// Función para combinar todas las categorías de traducción
+// Function to combine all translation categories
 const mergeTranslations = () => {
   const result: Translations = { es: {}, en: {} };
   
@@ -20,11 +20,19 @@ const mergeTranslations = () => {
     navigationTranslations
   ];
   
-  // Combinar todas las traducciones por idioma
+  // Combine all translations by language
   allTranslations.forEach(category => {
     Object.keys(category).forEach(lang => {
       if (lang === 'es' || lang === 'en') {
-        result[lang] = { ...result[lang], ...category[lang] };
+        // Check for duplicates before merging
+        const duplicates = Object.keys(category[lang as Language])
+          .filter(key => key in result[lang as Language]);
+        
+        if (duplicates.length > 0) {
+          console.warn(`Warning: Found duplicate translation keys: ${duplicates.join(', ')}`);
+        }
+        
+        result[lang as Language] = { ...result[lang as Language], ...category[lang as Language] };
       }
     });
   });
@@ -32,8 +40,8 @@ const mergeTranslations = () => {
   return result;
 };
 
-// Exportamos las traducciones combinadas
+// Export combined translations
 export const translations: Translations = mergeTranslations();
 
-// Re-exportar tipos para facilitar su uso
+// Re-export types for easier usage
 export type { Language, Translations } from './types';

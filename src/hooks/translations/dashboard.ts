@@ -34,11 +34,15 @@ export const dashboardTranslations: TranslationCategory = {
     electricityReduction: 'Reducción del consumo eléctrico',
     wasteManagementImproving: 'La gestión de residuos está mejorando',
     
-    // Recomendaciones
+    // Scopes
     allScopes: 'Todos los alcances',
     scope1: 'Alcance 1',
     scope2: 'Alcance 2',
     scope3: 'Alcance 3',
+    
+    // Dashboard specific
+    dashboardEmissions: 'Emisiones', // Renamed from 'emissions' to avoid duplication
+    dashboardReduction: 'Reducción'   // Renamed from 'reduction' to avoid duplication
   },
   en: {
     // Dashboard
@@ -72,10 +76,14 @@ export const dashboardTranslations: TranslationCategory = {
     electricityReduction: 'Electricity consumption reduction',
     wasteManagementImproving: 'Waste management is improving',
     
-    // Recommendations
+    // Scopes
     allScopes: 'All scopes',
     scope1: 'Scope 1',
     scope2: 'Scope 2',
     scope3: 'Scope 3',
+    
+    // Dashboard specific
+    dashboardEmissions: 'Emissions', // Renamed from 'emissions' to avoid duplication
+    dashboardReduction: 'Reduction'   // Renamed from 'reduction' to avoid duplication
   }
 };

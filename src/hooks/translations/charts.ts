@@ -40,8 +40,8 @@ export const chartsTranslations: TranslationCategory = {
     longTermGoal: 'Meta a largo plazo',
     by: 'para',
     complete: 'completado',
-    reduction: 'Reducción',
-    emissions: 'Emisiones',
+    reductionChart: 'Reducción',  // Renamed from 'reduction' to avoid duplication
+    emissionsChart: 'Emisiones'   // Renamed from 'emissions' to avoid duplication
   },
   en: {
     // Abbreviated months
@@ -81,7 +81,7 @@ export const chartsTranslations: TranslationCategory = {
     longTermGoal: 'Long-term goal',
     by: 'by',
     complete: 'complete',
-    reduction: 'Reduction',
-    emissions: 'Emissions',
+    reductionChart: 'Reduction',  // Renamed from 'reduction' to avoid duplication
+    emissionsChart: 'Emissions'   // Renamed from 'emissions' to avoid duplication
   }
 };
