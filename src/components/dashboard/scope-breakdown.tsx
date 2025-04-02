@@ -100,29 +100,30 @@ export function ScopeBreakdown() {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="pb-2">
         <CardTitle>{t('emissionsByCategory')}</CardTitle>
         <CardDescription>
           {t('distribution')}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-[350px] w-full">
+        <div className="h-[400px] w-full flex items-center justify-center">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
+              <PieChart margin={{ top: 0, bottom: 40, left: 0, right: 0 }}>
                 <Pie
                   data={chartData}
                   cx="50%"
-                  cy="50%"
+                  cy="45%"
                   labelLine={false}
-                  outerRadius={110}
-                  innerRadius={60}
+                  outerRadius={120}
+                  innerRadius={70}
                   paddingAngle={3}
                   dataKey="value"
                   animationDuration={1000}
                   animationBegin={0}
                   nameKey="name"
+                  label={renderCustomizedLabel}
                 >
                   {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} stroke="white" strokeWidth={2} />
@@ -134,11 +135,14 @@ export function ScopeBreakdown() {
                   verticalAlign="bottom" 
                   align="center"
                   wrapperStyle={{ 
-                    paddingTop: "30px",
+                    paddingTop: "20px",
                     display: "flex",
                     flexWrap: "wrap",
                     justifyContent: "center",
-                    gap: "16px"
+                    gap: "16px",
+                    bottom: 0,
+                    position: "absolute",
+                    width: "100%"
                   }}
                   formatter={(value, entry, index) => (
                     <span className="text-sm font-medium flex items-center gap-2">
@@ -152,7 +156,7 @@ export function ScopeBreakdown() {
           </ChartContainer>
         </div>
         
-        <div className="mt-6 pt-4 border-t">
+        <div className="mt-8 pt-4 border-t">
           <h4 className="text-sm font-medium mb-3">{t('highlightedInsights')}</h4>
           <ul className="text-sm text-muted-foreground space-y-2 list-disc pl-5">
             <li>{t('transportHighestContributor')}</li>
