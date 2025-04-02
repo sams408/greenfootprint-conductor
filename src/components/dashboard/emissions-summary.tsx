@@ -33,22 +33,22 @@ export function EmissionsSummary() {
     scope1: {
       label: t('scope1'),
       theme: { 
-        light: 'hsl(var(--primary))',
-        dark: 'hsl(var(--primary))'
+        light: '#3B82F6', // primary blue
+        dark: '#3B82F6'
       }
     },
     scope2: {
       label: t('scope2'),
       theme: { 
-        light: 'hsl(var(--secondary))',
-        dark: 'hsl(var(--secondary))'
+        light: '#10B981', // green
+        dark: '#10B981'
       }
     },
     scope3: {
       label: t('scope3'),
       theme: { 
-        light: 'hsl(var(--accent))',
-        dark: 'hsl(var(--accent))'
+        light: '#8B5CF6', // purple
+        dark: '#8B5CF6'
       }
     }
   };
@@ -79,9 +79,9 @@ export function EmissionsSummary() {
                 <YAxis />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Legend />
-                <Bar dataKey="scope1" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="scope2" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="scope3" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="scope1" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="scope2" fill="#10B981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="scope3" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </ChartContainer>
