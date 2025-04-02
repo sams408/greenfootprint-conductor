@@ -91,13 +91,19 @@ export function ScopeBreakdown() {
                   dataKey="value"
                   animationDuration={1000}
                   animationBegin={0}
+                  nameKey="name"
                 >
                   {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
                   ))}
                 </Pie>
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Legend />
+                <ChartTooltip content={<ChartTooltipContent nameKey="name" />} />
+                <Legend 
+                  layout="horizontal" 
+                  verticalAlign="bottom" 
+                  align="center"
+                  wrapperStyle={{ paddingTop: "20px" }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </ChartContainer>

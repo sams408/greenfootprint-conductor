@@ -40,8 +40,21 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     document.documentElement.lang = language;
   }, []);
 
+  // Translation function that handles missing translations
   const t = (key: string) => {
-    return translations[language][key] || key;
+    if (!translations[language]) {
+      console.warn(`Language "${language}" not found in translations`);
+      return key;
+    }
+
+    // Check if translation exists
+    const translation = translations[language][key];
+    if (!translation) {
+      console.warn(`Translation key "${key}" not found for language "${language}"`);
+      return key;
+    }
+
+    return translation;
   };
 
   return (

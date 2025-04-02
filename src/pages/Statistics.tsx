@@ -25,7 +25,42 @@ const emissionsBySource = [
 ];
 
 const Statistics = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  
+  // Traduce los nombres de las categorías según el idioma
+  const getTranslatedData = () => {
+    if (language === 'es') {
+      return [
+        { name: t('transport'), value: 35 },
+        { name: t('electricity'), value: 25 },
+        { name: t('diet'), value: 20 },
+        { name: t('waste'), value: 15 },
+        { name: t('others'), value: 5 },
+      ];
+    }
+    return emissionsBySource;
+  };
+
+  // Traduce los meses según el idioma
+  const getTranslatedMonthlyData = () => {
+    if (language === 'es') {
+      const monthTranslations: Record<string, string> = {
+        'Jan': t('jan'),
+        'Feb': t('feb'),
+        'Mar': t('mar'),
+        'Apr': t('apr'),
+        'May': t('may'),
+        'Jun': t('jun'),
+        'Jul': t('jul'),
+      };
+      
+      return monthlyData.map(item => ({
+        ...item,
+        name: monthTranslations[item.name] || item.name
+      }));
+    }
+    return monthlyData;
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -55,15 +90,16 @@ const Statistics = () => {
             <CardContent>
               <div className="h-[350px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={monthlyData}>
+                  <LineChart data={getTranslatedMonthlyData()}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
-                    <Legend />
+                    <Legend layout="horizontal" verticalAlign="bottom" wrapperStyle={{ paddingTop: '15px' }} />
                     <Line 
                       type="monotone" 
                       dataKey="emissions" 
+                      name={t('emissions')}
                       stroke="#3B82F6" 
                       strokeWidth={2} 
                       dot={{ r: 4 }} 
@@ -71,6 +107,7 @@ const Statistics = () => {
                     <Line 
                       type="monotone" 
                       dataKey="reduction" 
+                      name={t('reduction')}
                       stroke="#10B981" 
                       strokeWidth={2} 
                       dot={{ r: 4 }} 
@@ -91,13 +128,13 @@ const Statistics = () => {
             <CardContent>
               <div className="h-[350px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={emissionsBySource}>
+                  <BarChart data={getTranslatedData()}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
-                    <Legend />
-                    <Bar dataKey="value" fill="#10B981" radius={[4, 4, 0, 0]} />
+                    <Legend layout="horizontal" verticalAlign="bottom" wrapperStyle={{ paddingTop: '15px' }} />
+                    <Bar dataKey="value" name={t('emissions')} fill="#10B981" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
