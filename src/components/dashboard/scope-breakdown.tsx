@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useEffect, useState } from "react";
-import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
 export function ScopeBreakdown() {
   const { language, t } = useLanguage();
@@ -67,37 +67,6 @@ export function ScopeBreakdown() {
     }
   };
 
-  // Custom renderer for the pie chart labels
-  const renderCustomizedLabel = ({
-    cx,
-    cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
-    percent,
-    index,
-    name,
-  }: any) => {
-    const RADIAN = Math.PI / 180;
-    // Position the labels outside the pie chart
-    const radius = outerRadius + 30;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-    
-    return percent > 0.05 ? (
-      <text
-        x={x}
-        y={y}
-        fill="#888888"
-        textAnchor={x > cx ? "start" : "end"}
-        dominantBaseline="central"
-        className="text-xs font-medium"
-      >
-        {`${name} (${(percent * 100).toFixed(0)}%)`}
-      </text>
-    ) : null;
-  };
-
   return (
     <Card>
       <CardHeader className="pb-2">
@@ -107,23 +76,23 @@ export function ScopeBreakdown() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-[400px] w-full flex items-center justify-center">
+        <div className="h-[350px] w-full flex items-center justify-center">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart margin={{ top: 0, bottom: 40, left: 0, right: 0 }}>
+              <PieChart margin={{ top: 20, right: 20, bottom: 60, left: 20 }}>
                 <Pie
                   data={chartData}
                   cx="50%"
-                  cy="45%"
-                  labelLine={false}
-                  outerRadius={120}
-                  innerRadius={70}
+                  cy="50%"
+                  labelLine={true}
+                  outerRadius={100}
+                  innerRadius={60}
                   paddingAngle={3}
                   dataKey="value"
                   animationDuration={1000}
                   animationBegin={0}
                   nameKey="name"
-                  label={renderCustomizedLabel}
+                  label={(entry) => `${entry.name}: ${entry.value}%`}
                 >
                   {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} stroke="white" strokeWidth={2} />
@@ -140,9 +109,7 @@ export function ScopeBreakdown() {
                     flexWrap: "wrap",
                     justifyContent: "center",
                     gap: "16px",
-                    bottom: 0,
-                    position: "absolute",
-                    width: "100%"
+                    marginTop: "20px"
                   }}
                   formatter={(value, entry, index) => (
                     <span className="text-sm font-medium flex items-center gap-2">
