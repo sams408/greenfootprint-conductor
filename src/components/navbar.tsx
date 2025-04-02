@@ -94,33 +94,18 @@ export function Navbar() {
               <Skeleton className="h-4 w-20" />
             </div>
           ) : user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-2">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-green-200 text-green-800">
-                      {getUserInitials()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="hidden md:inline-block">
-                    {displayName}
-                  </span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>{t('profile')}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate('/profile')}>
-                  <User className="mr-2 h-4 w-4" />
-                  <span>{t('profile')}</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="text-red-600">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>{t('signOut')}</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate('/profile')}
+              className="h-9 w-9 rounded-full"
+            >
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-green-200 text-green-800">
+                  {getUserInitials()}
+                </AvatarFallback>
+              </Avatar>
+            </Button>
           ) : (
             <Button onClick={handleLogin} variant="default" size="sm" className="bg-green-600 hover:bg-green-700">
               {t('signIn')}
