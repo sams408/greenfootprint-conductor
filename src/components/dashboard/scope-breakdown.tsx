@@ -76,23 +76,23 @@ export function ScopeBreakdown() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-[350px] w-full flex items-center justify-center">
+        <div className="h-[300px] w-full flex items-center justify-center">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart margin={{ top: 20, right: 20, bottom: 60, left: 20 }}>
+              <PieChart>
                 <Pie
                   data={chartData}
                   cx="50%"
                   cy="50%"
-                  labelLine={true}
-                  outerRadius={100}
-                  innerRadius={60}
+                  labelLine={false}
+                  outerRadius={80}
+                  innerRadius={50}
                   paddingAngle={3}
                   dataKey="value"
                   animationDuration={1000}
                   animationBegin={0}
                   nameKey="name"
-                  label={(entry) => `${entry.name}: ${entry.value}%`}
+                  label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
                 >
                   {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} stroke="white" strokeWidth={2} />
@@ -108,8 +108,7 @@ export function ScopeBreakdown() {
                     display: "flex",
                     flexWrap: "wrap",
                     justifyContent: "center",
-                    gap: "16px",
-                    marginTop: "20px"
+                    gap: "16px"
                   }}
                   formatter={(value, entry, index) => (
                     <span className="text-sm font-medium flex items-center gap-2">
