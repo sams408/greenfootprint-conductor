@@ -34,6 +34,8 @@ export function Navbar() {
       .substring(0, 2);
   };
 
+  const displayName = user?.user_metadata?.name || user?.email || t('user');
+
   const handleLogout = async () => {
     await signOut();
   };
@@ -101,14 +103,14 @@ export function Navbar() {
                     </AvatarFallback>
                   </Avatar>
                   <span className="hidden md:inline-block">
-                    {user.user_metadata.name || t('user')}
+                    {displayName}
                   </span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel>{t('profile')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate('/users')}>
+                <DropdownMenuItem onClick={() => navigate('/profile')}>
                   <User className="mr-2 h-4 w-4" />
                   <span>{t('profile')}</span>
                 </DropdownMenuItem>
