@@ -76,17 +76,17 @@ export function ScopeBreakdown() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px] w-full flex items-center justify-center">
+        <div className="h-[240px] w-full flex items-center justify-center">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
+              <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                 <Pie
                   data={chartData}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  outerRadius={80}
-                  innerRadius={50}
+                  outerRadius={70}
+                  innerRadius={40}
                   paddingAngle={3}
                   dataKey="value"
                   animationDuration={1000}
