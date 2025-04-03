@@ -3,8 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useEffect, useState } from "react";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { PieChart as PieChartIcon } from "lucide-react";
+import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import { PieChartIcon } from "lucide-react";
 
 export function ScopeBreakdown() {
   const { language, t } = useLanguage();
@@ -96,13 +96,15 @@ export function ScopeBreakdown() {
                   animationDuration={1000}
                   animationBegin={0}
                   nameKey="name"
-                  label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
                 >
                   {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} stroke="white" strokeWidth={2} />
                   ))}
                 </Pie>
-                <ChartTooltip content={<ChartTooltipContent nameKey="name" />} />
+                <Tooltip 
+                  formatter={(value: number) => [`${value}%`, '']}
+                  contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', border: '1px solid #e2e8f0', borderRadius: '0.5rem' }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </ChartContainer>
@@ -112,7 +114,7 @@ export function ScopeBreakdown() {
           <div className="flex flex-wrap justify-center gap-4 my-4">
             {chartData.map((entry, index) => (
               <div key={`legend-${index}`} className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: entry.color }}></div>
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.color }}></div>
                 <span className="text-sm">{entry.name} ({entry.value}%)</span>
               </div>
             ))}
