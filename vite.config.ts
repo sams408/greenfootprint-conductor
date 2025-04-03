@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
+    // Only enable componentTagger in development mode
     mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {
@@ -19,4 +20,10 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    // Ensure no Lovable-specific code is included in the production build
+    rollupOptions: {
+      external: mode === 'production' ? ['lovable-tagger'] : []
+    }
+  }
 }));
