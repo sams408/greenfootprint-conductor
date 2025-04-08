@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { RecommendationsCard } from "@/components/dashboard/recommendations-card";
+import { RecommendationsCard } from "@/components/dashboard/recommendations";
 import { EmissionForm } from "@/components/dashboard/emission-form";
 import { useLanguage } from "@/hooks/useLanguage";
 
