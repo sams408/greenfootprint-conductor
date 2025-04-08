@@ -1,8 +1,9 @@
 
-import { FilePlus, Calculator } from "lucide-react";
+import { FilePlus, Calculator, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { useCalculator } from "@/contexts/CalculatorContext";
+import { Link } from "react-router-dom";
 
 export const CalculatorResults = () => {
   const { result, selectedAlcance, calculationData, handleSave } = useCalculator();
@@ -47,7 +48,7 @@ export const CalculatorResults = () => {
               </div>
             </div>
             
-            <div className="pt-4">
+            <div className="space-y-3">
               <Button 
                 onClick={handleSave} 
                 className="w-full flex items-center gap-2"
@@ -56,6 +57,16 @@ export const CalculatorResults = () => {
                 <FilePlus className="h-4 w-4" />
                 Guardar Resultado
               </Button>
+              
+              <Link to="/dashboard?tab=detail" className="block w-full">
+                <Button 
+                  className="w-full flex items-center gap-2"
+                  variant="secondary"
+                >
+                  <Lightbulb className="h-4 w-4" />
+                  Ver Recomendaciones Personalizadas
+                </Button>
+              </Link>
             </div>
           </div>
         ) : (
@@ -65,6 +76,16 @@ export const CalculatorResults = () => {
             <p className="text-sm text-muted-foreground mt-2">
               Completa el formulario y haz clic en "Calcular Huella de Carbono" para ver los resultados
             </p>
+            
+            <Link to="/dashboard?tab=detail" className="mt-6">
+              <Button 
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <Lightbulb className="h-4 w-4" />
+                Ver Recomendaciones Personalizadas
+              </Button>
+            </Link>
           </div>
         )}
       </CardContent>
