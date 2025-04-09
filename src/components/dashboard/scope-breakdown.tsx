@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useEffect, useState } from "react";
-import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { PieChartIcon } from "lucide-react";
 
 export function ScopeBreakdown() {
@@ -22,11 +22,11 @@ export function ScopeBreakdown() {
       : ['Transport', 'Electricity', 'Diet', 'Waste', 'Others'];
     
     return [
-      { name: labels[0], value: 35, color: "#22C55E" }, // Aumentado contraste
-      { name: labels[1], value: 25, color: "#3B82F6" }, // Color mantenido
-      { name: labels[2], value: 20, color: "#8B5CF6" }, // Color cambiado por uno más vibrante
-      { name: labels[3], value: 15, color: "#F59E0B" }, // Color mantenido
-      { name: labels[4], value: 5, color: "#EC4899" },  // Color cambiado por uno más vibrante
+      { name: labels[0], value: 35, color: "#22C55E" },
+      { name: labels[1], value: 25, color: "#3B82F6" },
+      { name: labels[2], value: 20, color: "#8B5CF6" },
+      { name: labels[3], value: 15, color: "#F59E0B" },
+      { name: labels[4], value: 5, color: "#EC4899" },
     ];
   }
 
@@ -80,42 +80,34 @@ export function ScopeBreakdown() {
         </CardDescription>
       </CardHeader>
       <CardContent className="p-4">
-        <div className="h-[280px] w-full flex items-center justify-center bg-gradient-to-br from-background/50 to-background rounded-lg p-3">
+        <div className="h-[280px] w-full bg-gradient-to-br from-background/50 to-background rounded-lg p-3">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+              <PieChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
                 <Pie
                   data={chartData}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  outerRadius={110}
-                  innerRadius={60}
+                  outerRadius={90}
+                  innerRadius={40}
                   paddingAngle={4}
                   dataKey="value"
                   animationDuration={1000}
                   animationBegin={0}
                   nameKey="name"
                   stroke="#ffffff"
-                  strokeWidth={3}
+                  strokeWidth={2}
                 >
                   {chartData.map((entry, index) => (
                     <Cell 
                       key={`cell-${index}`} 
                       fill={entry.color} 
-                      style={{ filter: 'drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.2))' }} 
+                      style={{ filter: 'drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.25))' }} 
                     />
                   ))}
                 </Pie>
-                <Tooltip 
-                  formatter={(value: number) => [`${value}%`, '']}
-                  contentStyle={{ 
-                    backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                    border: '1px solid #e2e8f0', 
-                    borderRadius: '0.5rem',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-                  }}
-                />
+                <ChartTooltip content={<ChartTooltipContent />} />
               </PieChart>
             </ResponsiveContainer>
           </ChartContainer>
