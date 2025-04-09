@@ -22,11 +22,11 @@ export function ScopeBreakdown() {
       : ['Transport', 'Electricity', 'Diet', 'Waste', 'Others'];
     
     return [
-      { name: labels[0], value: 35, color: "#10B981" },
-      { name: labels[1], value: 25, color: "#3B82F6" },
-      { name: labels[2], value: 20, color: "#6366F1" },
-      { name: labels[3], value: 15, color: "#F59E0B" },
-      { name: labels[4], value: 5, color: "#8B5CF6" },
+      { name: labels[0], value: 35, color: "#22C55E" }, // Aumentado contraste
+      { name: labels[1], value: 25, color: "#3B82F6" }, // Color mantenido
+      { name: labels[2], value: 20, color: "#8B5CF6" }, // Color cambiado por uno más vibrante
+      { name: labels[3], value: 15, color: "#F59E0B" }, // Color mantenido
+      { name: labels[4], value: 5, color: "#EC4899" },  // Color cambiado por uno más vibrante
     ];
   }
 
@@ -34,8 +34,8 @@ export function ScopeBreakdown() {
     transport: { 
       label: t('transport'),
       theme: { 
-        light: '#10B981',
-        dark: '#10B981'
+        light: '#22C55E',
+        dark: '#22C55E'
       }
     },
     electricity: { 
@@ -48,8 +48,8 @@ export function ScopeBreakdown() {
     diet: { 
       label: t('diet'),
       theme: { 
-        light: '#6366F1',
-        dark: '#6366F1'
+        light: '#8B5CF6',
+        dark: '#8B5CF6'
       }
     },
     waste: { 
@@ -62,25 +62,25 @@ export function ScopeBreakdown() {
     others: { 
       label: t('others'),
       theme: { 
-        light: '#8B5CF6',
-        dark: '#8B5CF6'
+        light: '#EC4899',
+        dark: '#EC4899'
       }
     }
   };
 
   return (
-    <Card>
-      <CardHeader className="pb-2">
+    <Card className="shadow-md border-2 border-border/70 overflow-hidden">
+      <CardHeader className="pb-2 bg-gradient-to-r from-card to-card/80">
         <CardTitle className="flex items-center gap-2">
-          <PieChartIcon className="h-5 w-5" />
+          <PieChartIcon className="h-5 w-5 text-primary" />
           {t('emissionsByCategory')}
         </CardTitle>
         <CardDescription>
           {t('distribution')}
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="h-[240px] w-full flex items-center justify-center">
+      <CardContent className="p-4">
+        <div className="h-[280px] w-full flex items-center justify-center bg-gradient-to-br from-background/50 to-background rounded-lg p-3">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
@@ -89,33 +89,44 @@ export function ScopeBreakdown() {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  outerRadius={90}
-                  innerRadius={50}
-                  paddingAngle={3}
+                  outerRadius={110}
+                  innerRadius={60}
+                  paddingAngle={4}
                   dataKey="value"
                   animationDuration={1000}
                   animationBegin={0}
                   nameKey="name"
+                  stroke="#ffffff"
+                  strokeWidth={3}
                 >
                   {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} stroke="white" strokeWidth={2} />
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={entry.color} 
+                      style={{ filter: 'drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.2))' }} 
+                    />
                   ))}
                 </Pie>
                 <Tooltip 
                   formatter={(value: number) => [`${value}%`, '']}
-                  contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', border: '1px solid #e2e8f0', borderRadius: '0.5rem' }}
+                  contentStyle={{ 
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                    border: '1px solid #e2e8f0', 
+                    borderRadius: '0.5rem',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                  }}
                 />
               </PieChart>
             </ResponsiveContainer>
           </ChartContainer>
         </div>
         
-        <div className="mt-2">
+        <div className="mt-4">
           <div className="flex flex-wrap justify-center gap-4 my-4">
             {chartData.map((entry, index) => (
-              <div key={`legend-${index}`} className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.color }}></div>
-                <span className="text-sm">{entry.name} ({entry.value}%)</span>
+              <div key={`legend-${index}`} className="flex items-center gap-2 bg-card p-2 rounded-lg shadow-sm">
+                <div className="w-4 h-4 rounded-full" style={{ backgroundColor: entry.color }}></div>
+                <span className="text-sm font-medium">{entry.name} ({entry.value}%)</span>
               </div>
             ))}
           </div>

@@ -4,6 +4,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { useEffect, useState } from 'react';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend } from 'recharts';
+import { BarChart3Icon } from 'lucide-react';
 
 export function EmissionsSummary() {
   const { language, t } = useLanguage();
@@ -54,29 +55,32 @@ export function EmissionsSummary() {
   };
 
   return (
-    <Card className="col-span-2">
-      <CardHeader>
-        <CardTitle>{t('emissionsByScope')}</CardTitle>
+    <Card className="col-span-2 shadow-md border-2 border-border/70 overflow-hidden">
+      <CardHeader className="bg-gradient-to-r from-card to-card/80">
+        <CardTitle className="flex items-center gap-2">
+          <BarChart3Icon className="h-5 w-5 text-primary" />
+          {t('emissionsByScope')}
+        </CardTitle>
         <CardDescription>
           {t('monthlyComparisonOfEmissions')}
         </CardDescription>
       </CardHeader>
-      <CardContent className="px-2">
-        <div className="h-[300px] w-full">
+      <CardContent className="px-2 pt-4">
+        <div className="h-[300px] w-full bg-gradient-to-br from-background/50 to-background rounded-lg p-3">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={chartData}
                 margin={{
-                  top: 5,
+                  top: 10,
                   right: 30,
-                  left: 0,
-                  bottom: 5,
+                  left: 5,
+                  bottom: 10,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.1)" />
-                <XAxis dataKey="name" />
-                <YAxis />
+                <XAxis dataKey="name" tickLine={false} axisLine={{ strokeWidth: 1 }} />
+                <YAxis tickLine={false} axisLine={{ strokeWidth: 1 }} />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Legend 
                   layout="horizontal" 
@@ -89,9 +93,27 @@ export function EmissionsSummary() {
                     gap: '15px'
                   }} 
                 />
-                <Bar dataKey="scope1" name={t('scope1')} fill="#3B82F6" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="scope2" name={t('scope2')} fill="#10B981" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="scope3" name={t('scope3')} fill="#8B5CF6" radius={[4, 4, 0, 0]} />
+                <Bar 
+                  dataKey="scope1" 
+                  name={t('scope1')} 
+                  fill="#3B82F6" 
+                  radius={[4, 4, 0, 0]}
+                  style={{ filter: 'drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.15))' }}
+                />
+                <Bar 
+                  dataKey="scope2" 
+                  name={t('scope2')} 
+                  fill="#10B981" 
+                  radius={[4, 4, 0, 0]}
+                  style={{ filter: 'drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.15))' }}
+                />
+                <Bar 
+                  dataKey="scope3" 
+                  name={t('scope3')} 
+                  fill="#8B5CF6" 
+                  radius={[4, 4, 0, 0]}
+                  style={{ filter: 'drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.15))' }}
+                />
               </BarChart>
             </ResponsiveContainer>
           </ChartContainer>
