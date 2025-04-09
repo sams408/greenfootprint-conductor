@@ -69,7 +69,7 @@ export function ScopeBreakdown() {
   };
 
   return (
-    <Card className="shadow-md border-2 border-border/70 overflow-hidden">
+    <Card className="shadow-md border-2 border-border/70 overflow-hidden h-full flex flex-col">
       <CardHeader className="pb-2 bg-gradient-to-r from-card to-card/80">
         <CardTitle className="flex items-center gap-2">
           <PieChartIcon className="h-5 w-5 text-primary" />
@@ -79,18 +79,18 @@ export function ScopeBreakdown() {
           {t('distribution')}
         </CardDescription>
       </CardHeader>
-      <CardContent className="p-4">
-        <div className="h-[280px] w-full bg-gradient-to-br from-background/50 to-background rounded-lg p-3">
+      <CardContent className="p-4 flex-1 flex flex-col">
+        <div className="flex-1 w-full bg-gradient-to-br from-background/50 to-background rounded-lg p-3 mb-4">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
+              <PieChart>
                 <Pie
                   data={chartData}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  outerRadius={90}
-                  innerRadius={40}
+                  outerRadius="80%"
+                  innerRadius="40%"
                   paddingAngle={4}
                   dataKey="value"
                   animationDuration={1000}
@@ -113,8 +113,8 @@ export function ScopeBreakdown() {
           </ChartContainer>
         </div>
         
-        <div className="mt-4">
-          <div className="flex flex-wrap justify-center gap-4 my-4">
+        <div className="mt-auto">
+          <div className="flex flex-wrap justify-center gap-3 mb-4">
             {chartData.map((entry, index) => (
               <div key={`legend-${index}`} className="flex items-center gap-2 bg-card p-2 rounded-lg shadow-sm">
                 <div className="w-4 h-4 rounded-full" style={{ backgroundColor: entry.color }}></div>
@@ -124,9 +124,9 @@ export function ScopeBreakdown() {
           </div>
         </div>
         
-        <div className="mt-4 pt-4 border-t">
-          <h4 className="text-sm font-medium mb-3">{t('highlightedInsights')}</h4>
-          <ul className="text-sm text-muted-foreground space-y-2 list-disc pl-5">
+        <div className="mt-2 pt-3 border-t">
+          <h4 className="text-sm font-medium mb-2">{t('highlightedInsights')}</h4>
+          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
             <li>{t('transportHighestContributor')}</li>
             <li>{t('electricityReduction')}</li>
             <li>{t('wasteManagementImproving')}</li>
