@@ -52,6 +52,7 @@ const AppRouter = () => {
               <Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />
               <Route path="/statistics" element={<ProtectedRoute element={<Statistics />} />} />
               <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
+              <Route path="/settings" element={<Navigate to="/dashboard" />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </SidebarInset>

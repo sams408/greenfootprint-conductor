@@ -71,13 +71,8 @@ export const getDefaultCategories = (): SidebarCategory[] => [
         icon: BarChart2,
         path: "/statistics",
         expanded: false,
-      },
-      {
-        labelKey: "settings",
-        icon: Settings,
-        path: "/settings",
-        expanded: false,
       }
+      // Settings item removed from here
     ]
   }
 ];
