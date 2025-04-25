@@ -1,3 +1,4 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SummaryTab } from "@/components/dashboard/tabs/SummaryTab";
 import { DetailTab } from "@/components/dashboard/tabs/DetailTab";
@@ -5,6 +6,9 @@ import { ComparisonsTab } from "@/components/dashboard/tabs/ComparisonsTab";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { StatsCards } from "@/components/dashboard/stats-cards";
+import { EmissionsSummary } from "@/components/dashboard/emissions-summary";
+import { ScopeBreakdown } from "@/components/dashboard/scope-breakdown";
 
 export function DashboardTabs() {
   const { t } = useLanguage();
