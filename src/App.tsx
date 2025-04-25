@@ -16,7 +16,7 @@ import Statistics from "./pages/Statistics";
 import Profile from "./pages/Profile";
 import { AuthProvider, useAuth } from "./hooks/useSupabaseAuth";
 import { LanguageProvider } from "./hooks/useLanguage";
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "./components/ui/sidebar";
+import { SidebarProvider } from "./components/ui/sidebar";
 import { AppSidebar } from "./components/app-sidebar";
 import { useIsMobile } from "./hooks/use-mobile";
 
@@ -41,13 +41,8 @@ const AppRouter = () => {
       <SidebarProvider defaultOpen={!isMobile}>
         <div className="flex min-h-screen w-full overflow-x-hidden">
           {user && <AppSidebar />}
-          <SidebarInset className="flex-1">
+          <div className="flex-1">
             <div className="w-full">
-              {user && (
-                <div className="sticky top-0 z-10 bg-background p-2">
-                  <SidebarTrigger className="md:hidden" />
-                </div>
-              )}
               <div className={`w-full ${isMobile ? 'px-4' : 'container'} py-6`}>
                 <Routes>
                   <Route path="/" element={<Index />} />
@@ -64,7 +59,7 @@ const AppRouter = () => {
                 </Routes>
               </div>
             </div>
-          </SidebarInset>
+          </div>
         </div>
       </SidebarProvider>
     </LanguageProvider>
