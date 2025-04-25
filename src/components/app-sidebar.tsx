@@ -4,12 +4,14 @@ import { useLocation } from "react-router-dom";
 import { 
   Sidebar, 
   SidebarContent,
-  useSidebar,
+  useSidebar
+} from "@/components/ui/sidebar";
+import {
   Drawer,
   DrawerContent,
   DrawerTrigger,
   DrawerClose
-} from "@/components/ui/sidebar";
+} from "@/components/ui/drawer";
 import { getDefaultCategories } from "./sidebar/sidebar-data";
 import { SidebarCategory as SidebarCategoryComponent } from "./sidebar/sidebar-category";
 import { AppSidebarHeader } from "./sidebar/sidebar-header";
