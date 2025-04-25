@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -86,8 +87,8 @@ export function ScopeBreakdown() {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  outerRadius={({ height }) => Math.min(height * 0.35, 80)}
-                  innerRadius={({ height }) => Math.min(height * 0.2, 40)}
+                  outerRadius={80}
+                  innerRadius={40}
                   paddingAngle={4}
                   dataKey="value"
                   nameKey="name"
