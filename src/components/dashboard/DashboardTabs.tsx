@@ -1,4 +1,3 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SummaryTab } from "@/components/dashboard/tabs/SummaryTab";
 import { DetailTab } from "@/components/dashboard/tabs/DetailTab";
@@ -12,7 +11,6 @@ export function DashboardTabs() {
   const [activeTab, setActiveTab] = useState("summary");
   const [searchParams] = useSearchParams();
   
-  // Set active tab based on URL parameter if present
   useEffect(() => {
     const tabParam = searchParams.get("tab");
     if (tabParam && ["summary", "detail", "comparisons"].includes(tabParam)) {
@@ -22,23 +20,31 @@ export function DashboardTabs() {
   
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-      <TabsList className="mb-4">
-        <TabsTrigger value="summary">{t('summary')}</TabsTrigger>
-        <TabsTrigger value="detail">{t('detailedView')}</TabsTrigger>
-        <TabsTrigger value="comparisons">{t('comparisons')}</TabsTrigger>
+      <TabsList className="mb-4 w-full justify-start overflow-x-auto">
+        <TabsTrigger value="summary" className="text-sm sm:text-base">{t('summary')}</TabsTrigger>
+        <TabsTrigger value="detail" className="text-sm sm:text-base">{t('detailedView')}</TabsTrigger>
+        <TabsTrigger value="comparisons" className="text-sm sm:text-base">{t('comparisons')}</TabsTrigger>
       </TabsList>
       
-      <TabsContent value="summary">
-        <SummaryTab />
-      </TabsContent>
-      
-      <TabsContent value="detail">
-        <DetailTab />
-      </TabsContent>
-      
-      <TabsContent value="comparisons">
-        <ComparisonsTab />
-      </TabsContent>
+      <div className="w-full overflow-x-hidden">
+        <TabsContent value="summary">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
+            <StatsCards />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6">
+            <EmissionsSummary />
+            <ScopeBreakdown />
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="detail">
+          <DetailTab />
+        </TabsContent>
+        
+        <TabsContent value="comparisons">
+          <ComparisonsTab />
+        </TabsContent>
+      </div>
     </Tabs>
   );
 }

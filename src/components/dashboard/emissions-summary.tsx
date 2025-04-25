@@ -57,30 +57,41 @@ export function EmissionsSummary() {
   return (
     <Card className="col-span-2 shadow-md border-2 border-border/70 overflow-hidden">
       <CardHeader className="bg-gradient-to-r from-card to-card/80">
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
           <BarChart3Icon className="h-5 w-5 text-primary" />
           {t('emissionsByScope')}
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-sm">
           {t('monthlyComparisonOfEmissions')}
         </CardDescription>
       </CardHeader>
-      <CardContent className="px-2 pt-4">
-        <div className="h-[300px] w-full bg-gradient-to-br from-background/50 to-background rounded-lg p-3">
+      <CardContent className="p-2 sm:p-4">
+        <div className="h-[250px] sm:h-[300px] w-full bg-gradient-to-br from-background/50 to-background rounded-lg p-2 sm:p-3">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={chartData}
                 margin={{
                   top: 10,
-                  right: 30,
-                  left: 5,
+                  right: 10,
+                  left: 0,
                   bottom: 10,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.1)" />
-                <XAxis dataKey="name" tickLine={false} axisLine={{ strokeWidth: 1 }} />
-                <YAxis tickLine={false} axisLine={{ strokeWidth: 1 }} />
+                <XAxis 
+                  dataKey="name" 
+                  tickLine={false} 
+                  axisLine={{ strokeWidth: 1 }}
+                  fontSize={12}
+                  interval={window.innerWidth < 500 ? 1 : 0}
+                />
+                <YAxis 
+                  tickLine={false} 
+                  axisLine={{ strokeWidth: 1 }}
+                  fontSize={12}
+                  width={40}
+                />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Legend 
                   layout="horizontal" 
@@ -89,8 +100,10 @@ export function EmissionsSummary() {
                     paddingTop: '15px', 
                     margin: '0 auto',
                     display: 'flex',
+                    flexWrap: 'wrap',
                     justifyContent: 'center',
-                    gap: '15px'
+                    gap: '10px',
+                    fontSize: '12px'
                   }} 
                 />
                 <Bar 

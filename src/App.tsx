@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,10 +17,10 @@ import { AuthProvider, useAuth } from "./hooks/useSupabaseAuth";
 import { LanguageProvider } from "./hooks/useLanguage";
 import { SidebarProvider, SidebarInset } from "./components/ui/sidebar";
 import { AppSidebar } from "./components/app-sidebar";
+import { useIsMobile } from "./hooks/useIsMobile";
 
 const queryClient = new QueryClient();
 
-// Componente protegido que redirige a la autenticación si no hay sesión
 const ProtectedRoute = ({ element }: { element: React.ReactNode }) => {
   const { user, loading } = useAuth();
 
@@ -32,29 +31,31 @@ const ProtectedRoute = ({ element }: { element: React.ReactNode }) => {
   return user ? <>{element}</> : <Navigate to="/auth" />;
 };
 
-// Router con AuthProvider
 const AppRouter = () => {
   const { user } = useAuth();
+  const isMobile = useIsMobile();
 
   return (
     <LanguageProvider>
       <SidebarProvider>
-        <div className="flex min-h-screen w-full">
+        <div className="flex min-h-screen w-full overflow-x-hidden">
           {user && <AppSidebar />}
-          <SidebarInset>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
-              <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
-              <Route path="/emissions" element={<ProtectedRoute element={<Emissions />} />} />
-              <Route path="/calculator" element={<ProtectedRoute element={<Calculator />} />} />
-              <Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />
-              <Route path="/statistics" element={<ProtectedRoute element={<Statistics />} />} />
-              <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
-              <Route path="/settings" element={<Navigate to="/dashboard" />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+          <SidebarInset className="flex-1">
+            <div className={`w-full ${isMobile ? 'px-4' : 'container'} py-6`}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
+                <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+                <Route path="/emissions" element={<ProtectedRoute element={<Emissions />} />} />
+                <Route path="/calculator" element={<ProtectedRoute element={<Calculator />} />} />
+                <Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />
+                <Route path="/statistics" element={<ProtectedRoute element={<Statistics />} />} />
+                <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
+                <Route path="/settings" element={<Navigate to="/dashboard" />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
           </SidebarInset>
         </div>
       </SidebarProvider>
