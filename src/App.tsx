@@ -16,7 +16,7 @@ import Statistics from "./pages/Statistics";
 import Profile from "./pages/Profile";
 import { AuthProvider, useAuth } from "./hooks/useSupabaseAuth";
 import { LanguageProvider } from "./hooks/useLanguage";
-import { SidebarProvider, SidebarInset } from "./components/ui/sidebar";
+import { SidebarProvider, SidebarInset, SidebarTrigger } from "./components/ui/sidebar";
 import { AppSidebar } from "./components/app-sidebar";
 import { useIsMobile } from "./hooks/use-mobile";
 
@@ -38,24 +38,31 @@ const AppRouter = () => {
 
   return (
     <LanguageProvider>
-      <SidebarProvider>
+      <SidebarProvider defaultOpen={!isMobile}>
         <div className="flex min-h-screen w-full overflow-x-hidden">
           {user && <AppSidebar />}
           <SidebarInset className="flex-1">
-            <div className={`w-full ${isMobile ? 'px-4' : 'container'} py-6`}>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
-                <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
-                <Route path="/emissions" element={<ProtectedRoute element={<Emissions />} />} />
-                <Route path="/calculator" element={<ProtectedRoute element={<Calculator />} />} />
-                <Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />
-                <Route path="/statistics" element={<ProtectedRoute element={<Statistics />} />} />
-                <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
-                <Route path="/settings" element={<Navigate to="/dashboard" />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+            <div className="w-full">
+              {user && (
+                <div className="sticky top-0 z-10 bg-background p-2">
+                  <SidebarTrigger className="md:hidden" />
+                </div>
+              )}
+              <div className={`w-full ${isMobile ? 'px-4' : 'container'} py-6`}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
+                  <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+                  <Route path="/emissions" element={<ProtectedRoute element={<Emissions />} />} />
+                  <Route path="/calculator" element={<ProtectedRoute element={<Calculator />} />} />
+                  <Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />
+                  <Route path="/statistics" element={<ProtectedRoute element={<Statistics />} />} />
+                  <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
+                  <Route path="/settings" element={<Navigate to="/dashboard" />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </div>
             </div>
           </SidebarInset>
         </div>

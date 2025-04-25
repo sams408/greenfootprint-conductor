@@ -31,7 +31,7 @@ export function SidebarItemComponent({
           <div 
             className={cn(
               "flex w-full items-center gap-2 px-4 py-2 text-sm outline-none transition-colors rounded-md",
-              isActiveRoute(item.path) ? "text-gray-800 font-medium bg-gray-100" : "text-gray-600 hover:bg-gray-100 hover:text-gray-800"
+              isActiveRoute(item.path) ? "text-gray-800 font-medium bg-gray-100 dark:bg-sidebar-accent dark:text-sidebar-accent-foreground" : "text-gray-600 hover:bg-gray-100 hover:text-gray-800 dark:text-sidebar-foreground dark:hover:bg-sidebar-accent dark:hover:text-sidebar-accent-foreground"
             )}
             onClick={() => toggleExpand()}
           >
@@ -48,7 +48,7 @@ export function SidebarItemComponent({
               to={item.path}
               className={cn(
                 "flex items-center gap-2 px-4 py-2 text-sm rounded-md",
-                isActiveRoute(item.path) ? "text-gray-800 font-medium bg-gray-100" : "text-gray-600 hover:bg-gray-100 hover:text-gray-800"
+                isActiveRoute(item.path) ? "text-gray-800 font-medium bg-gray-100 dark:bg-sidebar-accent dark:text-sidebar-accent-foreground" : "text-gray-600 hover:bg-gray-100 hover:text-gray-800 dark:text-sidebar-foreground dark:hover:bg-sidebar-accent dark:hover:text-sidebar-accent-foreground"
               )}
             >
               <item.icon className="h-4 w-4 mr-2" />
@@ -59,7 +59,7 @@ export function SidebarItemComponent({
       </SidebarMenuItem>
       
       {item.children && item.expanded && (
-        <div className="ml-6 pl-2 border-l border-gray-200">
+        <div className="ml-6 pl-2 border-l border-gray-200 dark:border-sidebar-border">
           {item.children.map((subItem) => (
             <SidebarSubItem 
               key={subItem.labelKey} 
