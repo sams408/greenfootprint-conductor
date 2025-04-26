@@ -51,23 +51,29 @@ export function AppSidebar() {
   // Use Drawer component for mobile view
   if (isMobileDevice) {
     return (
-      <div className="md:hidden">
+      <>
+        <Button 
+          variant="outline" 
+          size="icon" 
+          className="fixed top-4 left-4 z-50 md:hidden"
+          onClick={() => setOpen(true)}
+        >
+          <Menu className="h-5 w-5" />
+          <span className="sr-only">Abrir menú</span>
+        </Button>
+        
         <Drawer open={open} onOpenChange={setOpen}>
-          <DrawerTrigger asChild>
-            <Button variant="outline" size="icon" className="fixed top-4 left-4 z-50">
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Abrir menú</span>
-            </Button>
-          </DrawerTrigger>
-          <DrawerContent className="w-[85%] h-full p-0">
+          <DrawerContent className="h-[95%] max-h-[95%]">
             <div className="flex h-full flex-col">
               <div className="flex justify-end p-4">
-                <DrawerClose asChild>
-                  <Button variant="ghost" size="icon">
-                    <X className="h-5 w-5" />
-                    <span className="sr-only">Cerrar menú</span>
-                  </Button>
-                </DrawerClose>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => setOpen(false)}
+                >
+                  <X className="h-5 w-5" />
+                  <span className="sr-only">Cerrar menú</span>
+                </Button>
               </div>
               <AppSidebarHeader />
               <SidebarContent className="p-0 overflow-y-auto flex-1">
@@ -85,7 +91,7 @@ export function AppSidebar() {
             </div>
           </DrawerContent>
         </Drawer>
-      </div>
+      </>
     );
   }
 
@@ -93,7 +99,7 @@ export function AppSidebar() {
   return (
     <Sidebar 
       variant="inset" 
-      className="bg-white dark:bg-sidebar border-r border-gray-200 shadow-sm hidden md:flex"
+      className="border-r border-gray-200 shadow-sm hidden md:flex"
     >
       <AppSidebarHeader />
       <SidebarContent className="p-0">

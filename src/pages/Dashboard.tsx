@@ -7,7 +7,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="container py-6 flex-1">
+      <div className="flex-1 px-4 py-6 md:px-6">
         <DashboardHeader />
         <DashboardTabs />
       </div>

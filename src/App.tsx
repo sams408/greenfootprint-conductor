@@ -41,24 +41,20 @@ const AppRouter = () => {
       <SidebarProvider defaultOpen={!isMobile}>
         <div className="flex min-h-screen w-full overflow-x-hidden">
           {user && <AppSidebar />}
-          <div className="flex-1">
-            <div className="w-full">
-              <div className={`w-full ${isMobile ? 'px-4' : 'container'} py-6`}>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
-                  <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
-                  <Route path="/emissions" element={<ProtectedRoute element={<Emissions />} />} />
-                  <Route path="/calculator" element={<ProtectedRoute element={<Calculator />} />} />
-                  <Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />
-                  <Route path="/statistics" element={<ProtectedRoute element={<Statistics />} />} />
-                  <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
-                  <Route path="/settings" element={<Navigate to="/dashboard" />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </div>
-            </div>
+          <div className="flex-1 md:ml-[var(--sidebar-width)]">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
+              <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+              <Route path="/emissions" element={<ProtectedRoute element={<Emissions />} />} />
+              <Route path="/calculator" element={<ProtectedRoute element={<Calculator />} />} />
+              <Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />
+              <Route path="/statistics" element={<ProtectedRoute element={<Statistics />} />} />
+              <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
+              <Route path="/settings" element={<Navigate to="/dashboard" />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </div>
         </div>
       </SidebarProvider>
