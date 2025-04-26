@@ -30,7 +30,7 @@ export const Sidebar = React.forwardRef<
       return (
         <div
           className={cn(
-            "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground",
+            "flex h-full w-[--sidebar-width] flex-col bg-white border-r",
             className
           )}
           ref={ref}
@@ -43,17 +43,15 @@ export const Sidebar = React.forwardRef<
 
     if (isMobile) {
       return (
-        <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
+        <Sheet open={openMobile} onOpenChange={setOpenMobile}>
           <SheetContent
-            data-sidebar="sidebar"
-            data-mobile="true"
-            className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+            side="left"
+            className="w-[--sidebar-width] p-0 bg-white"
             style={
               {
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
               } as React.CSSProperties
             }
-            side={side}
           >
             <div className="flex h-full w-full flex-col">{children}</div>
           </SheetContent>
@@ -64,7 +62,10 @@ export const Sidebar = React.forwardRef<
     return (
       <div
         ref={ref}
-        className="group fixed left-0 top-0 bottom-0 z-40 hidden md:block text-sidebar-foreground"
+        className={cn(
+          "group fixed left-0 top-0 bottom-0 z-40 hidden md:block bg-white border-r",
+          className
+        )}
         data-state={state}
         data-collapsible={state === "collapsed" ? collapsible : ""}
         data-variant={variant}
@@ -78,18 +79,14 @@ export const Sidebar = React.forwardRef<
       >
         <div
           className={cn(
-            "h-svh w-[--sidebar-width] bg-sidebar transition-all",
+            "h-full w-[--sidebar-width] transition-all",
             variant === "floating" || variant === "inset"
-              ? "m-2 rounded-lg border border-sidebar-border group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]"
-              : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l",
-            className
+              ? "m-2 rounded-lg border group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]"
+              : "group-data-[collapsible=icon]:w-[--sidebar-width-icon]"
           )}
           {...props}
         >
-          <div
-            data-sidebar="sidebar"
-            className="flex h-full w-full flex-col"
-          >
+          <div className="flex h-full w-full flex-col">
             {children}
           </div>
         </div>
