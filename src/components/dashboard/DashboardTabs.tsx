@@ -1,6 +1,5 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SummaryTab } from "@/components/dashboard/tabs/SummaryTab";
 import { DetailTab } from "@/components/dashboard/tabs/DetailTab";
 import { ComparisonsTab } from "@/components/dashboard/tabs/ComparisonsTab";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -23,15 +22,17 @@ export function DashboardTabs() {
   }, [searchParams]);
   
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-      <TabsList className="mb-4 w-full justify-start overflow-x-auto">
-        <TabsTrigger value="summary" className="text-sm sm:text-base">{t('summary')}</TabsTrigger>
-        <TabsTrigger value="detail" className="text-sm sm:text-base">{t('detailedView')}</TabsTrigger>
-        <TabsTrigger value="comparisons" className="text-sm sm:text-base">{t('comparisons')}</TabsTrigger>
-      </TabsList>
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+      <div className="border-b">
+        <TabsList className="w-full justify-start overflow-x-auto bg-transparent">
+          <TabsTrigger value="summary" className="text-sm sm:text-base data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-4 py-2">{t('summary')}</TabsTrigger>
+          <TabsTrigger value="detail" className="text-sm sm:text-base data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-4 py-2">{t('detailedView')}</TabsTrigger>
+          <TabsTrigger value="comparisons" className="text-sm sm:text-base data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-4 py-2">{t('comparisons')}</TabsTrigger>
+        </TabsList>
+      </div>
       
-      <div className="w-full overflow-x-hidden">
-        <TabsContent value="summary">
+      <div className="w-full">
+        <TabsContent value="summary" className="mt-0 pt-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
             <StatsCards />
           </div>
@@ -41,11 +42,11 @@ export function DashboardTabs() {
           </div>
         </TabsContent>
         
-        <TabsContent value="detail">
+        <TabsContent value="detail" className="mt-0 pt-4">
           <DetailTab />
         </TabsContent>
         
-        <TabsContent value="comparisons">
+        <TabsContent value="comparisons" className="mt-0 pt-4">
           <ComparisonsTab />
         </TabsContent>
       </div>

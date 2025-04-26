@@ -63,7 +63,8 @@ export const Sidebar = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "group fixed left-0 top-0 bottom-0 z-40 hidden md:block bg-white border-r",
+          "fixed left-0 top-0 bottom-0 z-30 h-full w-[--sidebar-width] bg-white border-r",
+          "md:flex md:relative md:z-auto",
           className
         )}
         data-state={state}

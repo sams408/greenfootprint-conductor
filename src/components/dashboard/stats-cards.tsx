@@ -55,10 +55,12 @@ export function StatsCards() {
                 {stat.change}
               </div>
             </div>
-            <p className="text-sm font-medium text-muted-foreground line-clamp-1">{stat.title}</p>
-            <div className="flex items-baseline gap-1 mt-1">
-              <span className="text-xl sm:text-2xl font-bold">{stat.value}</span>
-              <span className="text-xs text-muted-foreground">{stat.unit}</span>
+            <div>
+              <p className="text-sm font-medium text-muted-foreground line-clamp-1">{stat.title}</p>
+              <div className="flex items-baseline gap-1 mt-1">
+                <span className="text-xl sm:text-2xl font-bold">{stat.value}</span>
+                <span className="text-xs text-muted-foreground">{stat.unit}</span>
+              </div>
             </div>
           </CardContent>
         </Card>

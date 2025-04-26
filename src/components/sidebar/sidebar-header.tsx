@@ -8,7 +8,7 @@ export function AppSidebarHeader() {
   const { t } = useLanguage();
   
   return (
-    <SidebarHeader className="pb-0">
+    <SidebarHeader className="pb-0 border-b">
       <div className="flex items-center gap-2 px-4 py-4">
         <Leaf className="h-6 w-6 text-emerald-600" />
         <span className="text-xl font-bold text-gray-800">GreenFlow</span>
