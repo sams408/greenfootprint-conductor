@@ -1,4 +1,3 @@
-
 // Import from common translations instead of shared
 import { commonTranslations } from './common';
 
@@ -360,7 +359,6 @@ export const formTranslations = {
     en: 'Registered Date',
     es: 'Fecha de Registro',
   },
-  // Document upload translations
   supportingDocuments: {
     en: 'Supporting Documents',
     es: 'Documentos de Respaldo'

@@ -69,14 +69,14 @@ export function DocumentsList({ emissionId, refreshTrigger = 0 }: DocumentsListP
       
       // Create a URL and trigger download
       const url = URL.createObjectURL(data);
-      const a = document.createElement('a');
-      document.body.appendChild(a);
+      const a = window.document.createElement('a');
+      window.document.body.appendChild(a);
       a.style.display = 'none';
       a.href = url;
       a.download = document.file_name;
       a.click();
       URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      window.document.body.removeChild(a);
     } catch (error: any) {
       toast({
         title: t('downloadError'),
