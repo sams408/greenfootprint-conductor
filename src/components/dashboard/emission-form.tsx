@@ -7,14 +7,22 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { Scope1Form } from './emission-forms/Scope1Form';
 import { Scope2Form } from './emission-forms/Scope2Form';
 import { Scope3Form } from './emission-forms/Scope3Form';
+import { EmissionDocuments } from '@/components/documents/EmissionDocuments';
 
 export function EmissionForm() {
   const { toast } = useToast();
   const [selectedScope, setSelectedScope] = useState("scope1");
+  const [emissionId, setEmissionId] = useState<string | null>(null);
   const { t } = useLanguage();
   
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    
+    // Generate a temporary emission ID for demonstration
+    // In a real application, this would be the ID returned from the database
+    const newEmissionId = crypto.randomUUID();
+    setEmissionId(newEmissionId);
+    
     toast({
       title: t('dataSubmitted'),
       description: t('emissionDataRegistered'),
@@ -49,6 +57,12 @@ export function EmissionForm() {
             <Scope3Form onSubmit={handleSubmit} />
           </TabsContent>
         </Tabs>
+        
+        {emissionId && (
+          <div className="mt-6">
+            <EmissionDocuments emissionId={emissionId} />
+          </div>
+        )}
       </CardContent>
       <CardFooter>
         <p className="text-xs text-muted-foreground">

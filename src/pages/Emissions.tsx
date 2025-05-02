@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { EmissionForm } from "@/components/dashboard/emission-form";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { FileDown, FileUp, Plus, Search, Filter } from "lucide-react";
+import { FileDown, FileUp, Plus, Search, Filter, FileText } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -15,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useLanguage } from "@/hooks/useLanguage";
+import { EmissionDetailDialog } from "@/components/dashboard/EmissionDetailDialog";
 
 // Datos de ejemplo para emisiones
 const initialEmissionsData = [
@@ -163,6 +163,8 @@ const Emissions = () => {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const [selectedEmission, setSelectedEmission] = useState<any>(null);
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   
   // Filter and paginate emissions data
   const filteredEmissions = initialEmissionsData.filter(emission => {
@@ -187,6 +189,11 @@ const Emissions = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  
+  const handleOpenDetail = (emission: any) => {
+    setSelectedEmission(emission);
+    setDetailDialogOpen(true);
+  };
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -295,6 +302,7 @@ const Emissions = () => {
                   <TableHead>{t('category')}</TableHead>
                   <TableHead>{t('description')}</TableHead>
                   <TableHead className="text-right">{t('value')}</TableHead>
+                  <TableHead className="w-[80px]"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -307,11 +315,21 @@ const Emissions = () => {
                     <TableCell className="text-right">
                       {emission.value} {emission.unit}
                     </TableCell>
+                    <TableCell>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-8 w-8 p-0" 
+                        onClick={() => handleOpenDetail(emission)}
+                      >
+                        <FileText className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
                 {currentEmissions.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={5} className="h-24 text-center">
+                    <TableCell colSpan={6} className="h-24 text-center">
                       {t('noResults')}
                     </TableCell>
                   </TableRow>
@@ -334,7 +352,6 @@ const Emissions = () => {
                 {t('previous')}
               </Button>
               {[...Array(Math.min(3, totalPages))].map((_, i) => {
-                // Logic to show correct page numbers when total pages > 3
                 let pageNumber = i + 1;
                 if (totalPages > 3) {
                   if (currentPage > totalPages - 2) {
@@ -366,6 +383,13 @@ const Emissions = () => {
             </div>
           </div>
         </div>
+
+        {/* Emission Detail Dialog */}
+        <EmissionDetailDialog
+          isOpen={detailDialogOpen}
+          onClose={() => setDetailDialogOpen(false)}
+          emission={selectedEmission}
+        />
       </div>
     </div>
   );
