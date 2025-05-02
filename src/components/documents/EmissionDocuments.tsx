@@ -29,8 +29,8 @@ export function EmissionDocuments({ emissionId }: EmissionDocumentsProps) {
     setDialogOpen(false);
   };
 
-  // Guard against invalid emission IDs (e.g. numeric IDs)
-  // This ensures we don't cause errors with Supabase's UUID expectations
+  // Format the emission ID to ensure it's a valid UUID
+  // This is crucial because Supabase expects a UUID format for the emission_id column
   const formattedEmissionId = typeof emissionId === 'string' 
     ? (emissionId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i) 
       ? emissionId 

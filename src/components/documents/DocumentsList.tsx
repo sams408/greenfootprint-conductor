@@ -34,6 +34,7 @@ export function DocumentsList({ emissionId, refreshTrigger = 0 }: DocumentsListP
         const data = await getEmissionDocuments(emissionId);
         setDocuments(data);
       } catch (error: any) {
+        console.error("Error fetching documents:", error);
         toast({
           title: t('error'),
           description: error.message,

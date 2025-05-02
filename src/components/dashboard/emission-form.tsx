@@ -18,8 +18,7 @@ export function EmissionForm() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     
-    // Generate a temporary emission ID for demonstration
-    // In a real application, this would be the ID returned from the database
+    // Generate a proper UUID for the emission ID
     const newEmissionId = crypto.randomUUID();
     setEmissionId(newEmissionId);
     
