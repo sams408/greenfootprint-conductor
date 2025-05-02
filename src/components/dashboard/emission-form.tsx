@@ -18,7 +18,8 @@ export function EmissionForm() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     
-    // Generate a proper UUID for the emission ID
+    // Generate a proper UUID for the emission ID using the Web Crypto API
+    // This ensures it's a valid v4 UUID that Supabase will accept
     const newEmissionId = crypto.randomUUID();
     setEmissionId(newEmissionId);
     

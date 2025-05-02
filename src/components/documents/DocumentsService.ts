@@ -2,12 +2,27 @@
 import { supabase } from '@/integrations/supabase/client';
 import { DocumentType } from './types';
 
+// Helper function to validate and sanitize UUIDs
+const validateEmissionId = (emissionId: string): string => {
+  // Check if the ID is already a valid UUID
+  const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  
+  if (uuidPattern.test(emissionId)) {
+    return emissionId;
+  } else {
+    throw new Error(`Invalid UUID format: ${emissionId}`);
+  }
+};
+
 export const getEmissionDocuments = async (emissionId: string) => {
   try {
+    // Validate the emission ID before querying
+    const validatedId = validateEmissionId(emissionId);
+    
     const { data, error } = await supabase
       .from('emission_documents')
       .select('*')
-      .eq('emission_id', emissionId)
+      .eq('emission_id', validatedId)
       .order('created_at', { ascending: false });
     
     if (error) throw error;

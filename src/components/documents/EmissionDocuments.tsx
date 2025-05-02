@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DocumentUploader } from './DocumentUploader';
 import { DocumentsList } from './DocumentsList';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useToast } from '@/hooks/use-toast';
 
 interface EmissionDocumentsProps {
   emissionId: string;
@@ -21,6 +22,7 @@ interface EmissionDocumentsProps {
 
 export function EmissionDocuments({ emissionId }: EmissionDocumentsProps) {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
   
@@ -29,13 +31,22 @@ export function EmissionDocuments({ emissionId }: EmissionDocumentsProps) {
     setDialogOpen(false);
   };
 
-  // Format the emission ID to ensure it's a valid UUID
-  // This is crucial because Supabase expects a UUID format for the emission_id column
-  const formattedEmissionId = typeof emissionId === 'string' 
-    ? (emissionId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i) 
-      ? emissionId 
-      : `emission-${emissionId}`)
-    : `emission-${emissionId}`;
+  // Ensure we're dealing with a valid UUID
+  const isValidUuid = (id: string): boolean => {
+    const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    return uuidPattern.test(id);
+  };
+
+  // If the ID isn't a valid UUID, we can't use it with Supabase
+  if (!isValidUuid(emissionId)) {
+    console.error(`Invalid UUID format: ${emissionId}`);
+    toast({
+      title: t('error'),
+      description: `Invalid emission ID format: ${emissionId}`,
+      variant: 'destructive',
+    });
+    return null;
+  }
 
   return (
     <Card>
@@ -65,7 +76,7 @@ export function EmissionDocuments({ emissionId }: EmissionDocumentsProps) {
               </DialogDescription>
             </DialogHeader>
             <DocumentUploader 
-              emissionId={formattedEmissionId}
+              emissionId={emissionId}
               onDocumentUploaded={handleDocumentUploaded}
             />
           </DialogContent>
@@ -74,7 +85,7 @@ export function EmissionDocuments({ emissionId }: EmissionDocumentsProps) {
       
       <CardContent>
         <DocumentsList 
-          emissionId={formattedEmissionId} 
+          emissionId={emissionId} 
           refreshTrigger={refreshTrigger} 
         />
       </CardContent>
