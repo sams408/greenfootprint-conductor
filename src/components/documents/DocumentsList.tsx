@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Card, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/hooks/useSupabaseAuth';
 
 type Document = {
@@ -71,12 +70,13 @@ export function DocumentsList({ emissionId, refreshTrigger = 0 }: DocumentsListP
       // Create a URL and trigger download
       const url = URL.createObjectURL(data);
       const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.style.display = 'none';
       a.href = url;
       a.download = document.file_name;
-      document.body.appendChild(a);
       a.click();
       URL.revokeObjectURL(url);
-      a.remove();
+      document.body.removeChild(a);
     } catch (error: any) {
       toast({
         title: t('downloadError'),
@@ -87,7 +87,7 @@ export function DocumentsList({ emissionId, refreshTrigger = 0 }: DocumentsListP
   };
 
   const handleDelete = async (documentId: string, filePath: string) => {
-    if (!confirm(t('confirmDelete'))) return;
+    if (!window.confirm(t('confirmDelete'))) return;
 
     try {
       // Delete from database

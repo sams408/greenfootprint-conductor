@@ -41,15 +41,30 @@ export function DocumentUploader({ emissionId, onDocumentUploaded }: DocumentUpl
       const filePath = `${user.id}/${emissionId}/${fileName}`;
 
       // Upload file to storage bucket
-      const { error: uploadError } = await supabase.storage
+      const uploadOptions = {
+        cacheControl: '3600',
+      };
+      
+      // Set up manual progress tracking
+      let lastProgress = 0;
+      const uploadTask = supabase.storage
         .from('emission-documents')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          onUploadProgress: (progress) => {
-            const percent = Math.round((progress.loaded / progress.total) * 100);
-            setProgress(percent);
-          }
-        });
+        .upload(filePath, file, uploadOptions);
+        
+      // Simulate progress since Supabase doesn't provide real-time progress
+      const progressInterval = setInterval(() => {
+        lastProgress += Math.floor(Math.random() * 15) + 5;
+        if (lastProgress > 95) {
+          lastProgress = 95;
+          clearInterval(progressInterval);
+        }
+        setProgress(lastProgress);
+      }, 300);
+        
+      const { error: uploadError } = await uploadTask;
+      
+      clearInterval(progressInterval);
+      setProgress(100);
 
       if (uploadError) throw uploadError;
 

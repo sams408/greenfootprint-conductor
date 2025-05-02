@@ -1,7 +1,9 @@
-import { formTranslations as sharedFormTranslations } from './shared';
+
+// Import from common translations instead of shared
+import { commonTranslations } from './common';
 
 export const formTranslations = {
-  ...sharedFormTranslations,
+  ...commonTranslations,
   email: {
     en: 'Email',
     es: 'Correo Electrónico',
@@ -318,10 +320,6 @@ export const formTranslations = {
     en: 'Year-to-Date Data',
     es: 'Datos del Año Hasta la Fecha',
   },
-  naturalGas: {
-    en: 'Natural Gas',
-    es: 'Gas Natural',
-  },
   companyVehicles: {
     en: 'Company Vehicles',
     es: 'Vehículos de la Empresa',
@@ -455,7 +453,7 @@ export const formTranslations = {
     en: 'Delete',
     es: 'Eliminar'
   },
-   noDocuments: {
+  noDocuments: {
     en: 'No documents uploaded yet',
     es: 'Aún no se han subido documentos'
   },
@@ -463,16 +461,16 @@ export const formTranslations = {
     en: 'Loading documents...',
     es: 'Cargando documentos...'
   },
-  uploadSupportingDocs: {
-    en: 'Upload supporting documentation',
-    es: 'Subir documentación de respaldo'
+  heatCool: {
+    en: 'Heating & Cooling',
+    es: 'Calefacción y Refrigeración'
   },
-  emissionValue: {
-    en: 'Emission Value',
-    es: 'Valor de la Emisión'
+  steam: {
+    en: 'Steam',
+    es: 'Vapor'
   },
-  registeredDate: {
-    en: 'Registered Date',
-    es: 'Fecha de Registro'
+  descriptionPlaceholder: {
+    en: 'Enter a description',
+    es: 'Ingrese una descripción'
   },
 };

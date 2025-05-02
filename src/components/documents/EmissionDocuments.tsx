@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DocumentUploader } from './DocumentUploader';
 import { DocumentsList } from './DocumentsList';
-import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface EmissionDocumentsProps {
@@ -38,9 +37,9 @@ export function EmissionDocuments({ emissionId }: EmissionDocumentsProps) {
             <FileText className="h-5 w-5" />
             {t('supportingDocuments')}
           </CardTitle>
-          <CardDescription>
+          <p className="text-sm text-muted-foreground">
             {t('documentationDescription')}
-          </CardDescription>
+          </p>
         </div>
         
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

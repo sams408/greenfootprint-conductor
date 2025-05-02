@@ -4,7 +4,7 @@ import { commonTranslations } from './common';
 import { dashboardTranslations } from './dashboard';
 import { chartsTranslations } from './charts';
 import { inventoryTranslations } from './inventory';
-import { formsTranslations } from './forms';
+import { formTranslations } from './forms';
 import { navigationTranslations } from './navigation';
 
 // Function to combine all translation categories
@@ -16,7 +16,7 @@ const mergeTranslations = () => {
     dashboardTranslations,
     chartsTranslations,
     inventoryTranslations,
-    formsTranslations,
+    formTranslations,
     navigationTranslations
   ];
   
