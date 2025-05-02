@@ -1,3 +1,4 @@
+
 // Import from common translations instead of shared
 import { commonTranslations } from './common';
 
@@ -467,8 +468,5 @@ export const formTranslations = {
     en: 'Steam',
     es: 'Vapor'
   },
-  descriptionPlaceholder: {
-    en: 'Enter a description',
-    es: 'Ingrese una descripción'
-  },
+  // Removed duplicate descriptionPlaceholder key here
 };
