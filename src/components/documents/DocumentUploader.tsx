@@ -29,8 +29,27 @@ export function DocumentUploader({ emissionId, onDocumentUploaded }: DocumentUpl
   };
 
   const handleUpload = async () => {
-    if (!file || !user) return;
+    if (!file || !user) {
+      toast({
+        title: t('error'),
+        description: !file ? t('selectFileFirst') : t('loginRequired'),
+        variant: 'destructive',
+      });
+      return;
+    }
     
+    // Validate the emissionId is a valid UUID
+    const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidPattern.test(emissionId)) {
+      console.error(`Invalid UUID format for emission ID: ${emissionId}`);
+      toast({
+        title: t('uploadError'),
+        description: t('invalidEmissionId'),
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setUploading(true);
     setProgress(0);
 
@@ -47,11 +66,6 @@ export function DocumentUploader({ emissionId, onDocumentUploaded }: DocumentUpl
       
       // Set up manual progress tracking
       let lastProgress = 0;
-      const uploadTask = supabase.storage
-        .from('emission-documents')
-        .upload(filePath, file, uploadOptions);
-        
-      // Simulate progress since Supabase doesn't provide real-time progress
       const progressInterval = setInterval(() => {
         lastProgress += Math.floor(Math.random() * 15) + 5;
         if (lastProgress > 95) {
@@ -61,12 +75,33 @@ export function DocumentUploader({ emissionId, onDocumentUploaded }: DocumentUpl
         setProgress(lastProgress);
       }, 300);
         
-      const { error: uploadError } = await uploadTask;
+      // Check if the storage bucket exists
+      const { data: buckets } = await supabase.storage.listBuckets();
+      const bucketExists = buckets?.some(bucket => bucket.name === 'emission-documents');
+      
+      if (!bucketExists) {
+        clearInterval(progressInterval);
+        setProgress(0);
+        setUploading(false);
+        toast({
+          title: t('uploadError'),
+          description: t('storageBucketMissing'),
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      const { error: uploadError } = await supabase.storage
+        .from('emission-documents')
+        .upload(filePath, file, uploadOptions);
       
       clearInterval(progressInterval);
       setProgress(100);
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw uploadError;
+      }
 
       // Get the public URL for the file
       const { data: publicURLData } = supabase.storage
@@ -74,7 +109,7 @@ export function DocumentUploader({ emissionId, onDocumentUploaded }: DocumentUpl
         .getPublicUrl(filePath);
 
       // Insert record in emission_documents table
-      const { error: dbError } = await supabase
+      const { error: dbError, data: insertData } = await supabase
         .from('emission_documents')
         .insert({
           emission_id: emissionId,
@@ -84,9 +119,15 @@ export function DocumentUploader({ emissionId, onDocumentUploaded }: DocumentUpl
           file_size: file.size,
           uploaded_by: user.id,
           description: description
-        });
+        })
+        .select();
 
-      if (dbError) throw dbError;
+      if (dbError) {
+        console.error('Database error:', dbError);
+        throw dbError;
+      }
+      
+      console.log('Document uploaded successfully:', insertData);
       
       toast({
         title: t('uploadSuccess'),
@@ -102,9 +143,10 @@ export function DocumentUploader({ emissionId, onDocumentUploaded }: DocumentUpl
         onDocumentUploaded();
       }
     } catch (error: any) {
+      console.error('Error in upload process:', error);
       toast({
         title: t('uploadError'),
-        description: error.message,
+        description: error.message || t('unknownError'),
         variant: 'destructive',
       });
     } finally {

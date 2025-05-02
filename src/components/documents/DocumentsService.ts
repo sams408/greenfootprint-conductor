@@ -14,6 +14,29 @@ const validateEmissionId = (emissionId: string): string => {
   }
 };
 
+// Function to check if our storage bucket exists and create it if not
+export const ensureStorageBucket = async () => {
+  try {
+    // Check if bucket exists
+    const { data: buckets } = await supabase.storage.listBuckets();
+    const bucketExists = buckets?.some(bucket => bucket.name === 'emission-documents');
+    
+    if (!bucketExists) {
+      // Create bucket if it doesn't exist
+      const { data, error } = await supabase.storage.createBucket('emission-documents', {
+        public: true,
+      });
+      
+      if (error) throw error;
+      console.log('Created storage bucket:', data);
+    }
+    return true;
+  } catch (error) {
+    console.error("Error ensuring storage bucket exists:", error);
+    return false;
+  }
+};
+
 export const getEmissionDocuments = async (emissionId: string) => {
   try {
     // Validate the emission ID before querying
@@ -35,6 +58,9 @@ export const getEmissionDocuments = async (emissionId: string) => {
 
 export const downloadDocument = async (filePath: string) => {
   try {
+    // Ensure the bucket exists
+    await ensureStorageBucket();
+    
     const { data, error } = await supabase.storage
       .from('emission-documents')
       .download(filePath);

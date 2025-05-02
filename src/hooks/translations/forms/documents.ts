@@ -29,7 +29,12 @@ export const documentsTranslations: TranslationCategory = {
     view: 'Ver',
     download: 'Descargar',
     delete: 'Eliminar',
-    error: 'Error'
+    error: 'Error',
+    selectFileFirst: 'Por favor selecciona un archivo primero',
+    loginRequired: 'Debes iniciar sesión para subir documentos',
+    invalidEmissionId: 'ID de emisión inválido',
+    storageBucketMissing: 'El bucket de almacenamiento no existe',
+    unknownError: 'Error desconocido al subir el documento'
   },
   en: {
     supportingDocuments: 'Supporting Documents',
@@ -58,6 +63,11 @@ export const documentsTranslations: TranslationCategory = {
     view: 'View',
     download: 'Download',
     delete: 'Delete',
-    error: 'Error'
+    error: 'Error',
+    selectFileFirst: 'Please select a file first',
+    loginRequired: 'You must be logged in to upload documents',
+    invalidEmissionId: 'Invalid emission ID',
+    storageBucketMissing: 'Storage bucket does not exist',
+    unknownError: 'Unknown error uploading document'
   }
 };

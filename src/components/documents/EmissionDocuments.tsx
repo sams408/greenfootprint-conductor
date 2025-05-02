@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FileText, Plus } from 'lucide-react';
 import { 
   Dialog,
@@ -15,6 +15,7 @@ import { DocumentUploader } from './DocumentUploader';
 import { DocumentsList } from './DocumentsList';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useToast } from '@/hooks/use-toast';
+import { ensureStorageBucket } from './DocumentsService';
 
 interface EmissionDocumentsProps {
   emissionId: string;
@@ -25,6 +26,22 @@ export function EmissionDocuments({ emissionId }: EmissionDocumentsProps) {
   const { toast } = useToast();
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
+  
+  // Ensure storage bucket exists on component mount
+  useEffect(() => {
+    const checkStorageBucket = async () => {
+      const bucketExists = await ensureStorageBucket();
+      if (!bucketExists) {
+        toast({
+          title: t('error'),
+          description: t('storageBucketMissing'),
+          variant: 'destructive',
+        });
+      }
+    };
+    
+    checkStorageBucket();
+  }, [toast, t]);
   
   const handleDocumentUploaded = () => {
     setRefreshTrigger(prev => prev + 1);
@@ -40,12 +57,23 @@ export function EmissionDocuments({ emissionId }: EmissionDocumentsProps) {
   // If the ID isn't a valid UUID, we can't use it with Supabase
   if (!isValidUuid(emissionId)) {
     console.error(`Invalid UUID format: ${emissionId}`);
-    toast({
-      title: t('error'),
-      description: `Invalid emission ID format: ${emissionId}`,
-      variant: 'destructive',
-    });
-    return null;
+    return (
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div className="space-y-1">
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              {t('supportingDocuments')}
+            </CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="p-4 text-center text-red-500">
+            {t('invalidEmissionId')}
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
