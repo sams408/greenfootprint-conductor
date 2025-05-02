@@ -29,6 +29,14 @@ export function EmissionDocuments({ emissionId }: EmissionDocumentsProps) {
     setDialogOpen(false);
   };
 
+  // Guard against invalid emission IDs (e.g. numeric IDs)
+  // This ensures we don't cause errors with Supabase's UUID expectations
+  const formattedEmissionId = typeof emissionId === 'string' 
+    ? (emissionId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i) 
+      ? emissionId 
+      : `emission-${emissionId}`)
+    : `emission-${emissionId}`;
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -57,7 +65,7 @@ export function EmissionDocuments({ emissionId }: EmissionDocumentsProps) {
               </DialogDescription>
             </DialogHeader>
             <DocumentUploader 
-              emissionId={emissionId}
+              emissionId={formattedEmissionId}
               onDocumentUploaded={handleDocumentUploaded}
             />
           </DialogContent>
@@ -66,7 +74,7 @@ export function EmissionDocuments({ emissionId }: EmissionDocumentsProps) {
       
       <CardContent>
         <DocumentsList 
-          emissionId={emissionId} 
+          emissionId={formattedEmissionId} 
           refreshTrigger={refreshTrigger} 
         />
       </CardContent>

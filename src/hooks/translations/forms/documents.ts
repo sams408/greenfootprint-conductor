@@ -24,6 +24,11 @@ export const documentsTranslations: TranslationCategory = {
     deleteSuccess: 'Eliminación Exitosa',
     documentDeleted: 'El documento ha sido eliminado exitosamente',
     noDocuments: 'Aún no se han subido documentos',
+    loading: 'Cargando documentos...',
+    view: 'Ver',
+    download: 'Descargar',
+    delete: 'Eliminar',
+    error: 'Error'
   },
   en: {
     supportingDocuments: 'Supporting Documents',
@@ -47,5 +52,10 @@ export const documentsTranslations: TranslationCategory = {
     deleteSuccess: 'Delete Successful',
     documentDeleted: 'The document has been deleted successfully',
     noDocuments: 'No documents uploaded yet',
+    loading: 'Loading documents...',
+    view: 'View',
+    download: 'Download',
+    delete: 'Delete',
+    error: 'Error'
   }
 };

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { EmissionDocuments } from '@/components/documents/EmissionDocuments';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useState, useEffect } from 'react';
 
 interface EmissionDetailProps {
   isOpen: boolean;
