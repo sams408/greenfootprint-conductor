@@ -1,0 +1,47 @@
+
+import { TranslationCategory } from '../types';
+
+export const energyTranslations: TranslationCategory = {
+  es: {
+    energyType: 'Tipo de Energía',
+    selectEnergyType: 'Seleccionar tipo de energía',
+    consumption: 'Consumo',
+    unit: 'Unidad',
+    selectUnit: 'Seleccionar unidad',
+    kwh: 'kWh',
+    mwh: 'MWh',
+    gj: 'GJ',
+    fuelType: 'Tipo de Combustible',
+    selectFuel: 'Seleccionar combustible',
+    diesel: 'Diésel',
+    gasoline: 'Gasolina',
+    naturalGas: 'Gas Natural',
+    lpg: 'GLP',
+    liters: 'Litros',
+    kilograms: 'Kilogramos',
+    cubicMeters: 'Metros Cúbicos',
+    heatCool: 'Calefacción y Refrigeración',
+    steam: 'Vapor',
+  },
+  en: {
+    energyType: 'Energy Type',
+    selectEnergyType: 'Select energy type',
+    consumption: 'Consumption',
+    unit: 'Unit',
+    selectUnit: 'Select unit',
+    kwh: 'kWh',
+    mwh: 'MWh',
+    gj: 'GJ',
+    fuelType: 'Fuel Type',
+    selectFuel: 'Select fuel',
+    diesel: 'Diesel',
+    gasoline: 'Gasoline',
+    naturalGas: 'Natural Gas',
+    lpg: 'LPG',
+    liters: 'Liters',
+    kilograms: 'Kilograms',
+    cubicMeters: 'Cubic Meters',
+    heatCool: 'Heating & Cooling',
+    steam: 'Steam',
+  }
+};

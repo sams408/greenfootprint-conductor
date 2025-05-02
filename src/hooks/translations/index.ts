@@ -4,7 +4,7 @@ import { commonTranslations } from './common';
 import { dashboardTranslations } from './dashboard';
 import { chartsTranslations } from './charts';
 import { inventoryTranslations } from './inventory';
-import { formTranslations } from './forms';
+import { formTranslations } from './forms/index';
 import { navigationTranslations } from './navigation';
 
 // Function to combine all translation categories
