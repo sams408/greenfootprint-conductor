@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useSupabaseAuth';
 import { DocumentItem } from './DocumentItem';
 import { EmptyDocumentsList } from './EmptyDocumentsList';
 import { DocumentType } from './types';
+import { DocumentSkeleton } from './DocumentSkeleton';
 import { 
   getEmissionDocuments, 
   downloadDocument, 
@@ -105,7 +106,13 @@ export function DocumentsList({ emissionId, refreshTrigger = 0 }: DocumentsListP
   };
 
   if (loading) {
-    return <div className="py-4 text-center text-gray-500">{t('loading')}</div>;
+    return (
+      <div className="space-y-4">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <DocumentSkeleton key={index} />
+        ))}
+      </div>
+    );
   }
 
   if (documents.length === 0) {
