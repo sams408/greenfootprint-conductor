@@ -16,15 +16,14 @@ export function ScopeBreakdown() {
 
   function getData(lang: string) {
     const labels = lang === 'es' 
-      ? ['Transporte', 'Electricidad', 'Dieta', 'Residuos', 'Otros'] 
-      : ['Transport', 'Electricity', 'Diet', 'Waste', 'Others'];
+      ? ['Transporte', 'Electricidad', 'Residuos', 'Otros'] 
+      : ['Transport', 'Electricity', 'Waste', 'Others'];
     
     return [
-      { name: labels[0], value: 35, color: "#22C55E" },
-      { name: labels[1], value: 25, color: "#3B82F6" },
-      { name: labels[2], value: 20, color: "#8B5CF6" },
-      { name: labels[3], value: 15, color: "#F59E0B" },
-      { name: labels[4], value: 5, color: "#EC4899" },
+      { name: labels[0], value: 45, color: "#22C55E" },
+      { name: labels[1], value: 30, color: "#3B82F6" },
+      { name: labels[2], value: 20, color: "#F59E0B" },
+      { name: labels[3], value: 5, color: "#EC4899" },
     ];
   }
 
@@ -41,13 +40,6 @@ export function ScopeBreakdown() {
       theme: { 
         light: '#3B82F6',
         dark: '#3B82F6'
-      }
-    },
-    diet: { 
-      label: t('diet'),
-      theme: { 
-        light: '#8B5CF6',
-        dark: '#8B5CF6'
       }
     },
     waste: { 
